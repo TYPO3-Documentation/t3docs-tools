@@ -1,0 +1,27 @@
+{
+  "name": "t3docs/t3docs-tools",
+  "type": "library",
+  "description": "Tools for TYPO3 documentation",
+  "keywords": [
+    "TYPO3",
+    "documentation"
+  ],
+  "authors": [
+    {
+      "name": "Sybille Peters",
+      "role": "Developer",
+      "homepage": "http://montagmorgen.at"
+    }
+  ],
+  "license": [
+    "GPL-2.0-or-later"
+  ],
+  "autoload": {
+    "psr-4": {
+      "T3docs\\T3docsTools\\": "Classes"
+    }
+  },
+  "require": {
+    "guzzlehttp/guzzle": "^6.3.0"
+  }
+}

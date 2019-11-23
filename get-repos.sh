@@ -1,6 +1,15 @@
 #!/bin/bash
 
+# automatic variables
+thisdir=$(dirname $0)
+cd $thisdir
 curdir=$(pwd)
+
+
+# config
+datadir=$curdir/data
+phpdir=$curdir/
+
 
 function exitMsg()
 {
@@ -8,7 +17,9 @@ function exitMsg()
     exit 1
 }
 
-php -f get-repo-names.php | while read i;do
+mkdir -p $datadir || exitMsg "Error creating directory $datadir"
+
+php -f $phpdir/get-repo-names.php | while read i;do
     echo $i
     cd data
     if [ ! -d $i ];then
@@ -16,5 +27,5 @@ php -f get-repo-names.php | while read i;do
     fi
     cd $i
     git fetch || exitMsg "fetch $i"
-     cd $curdir
+    cd $curdir
 done

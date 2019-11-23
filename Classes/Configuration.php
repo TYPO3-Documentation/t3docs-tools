@@ -13,7 +13,9 @@ class Configuration
     public function __construct(string $configFile = null)
     {
         if (!$configFile) {
-            $configFile = 'config.yml';
+            list($scriptName) = get_included_files();
+            $dirName = dirname($scriptName);
+            $configFile = $dirName . '/config.yml';
         }
         $content = file_get_contents($configFile);
         $this->config = yaml_parse($content);

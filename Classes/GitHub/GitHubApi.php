@@ -10,8 +10,11 @@ class GitHubApi
 {
     protected $client;
 
-    public function __construct(string $url = 'https://api.github.com/')
+    public function __construct(string $url = null)
     {
+        if ($url === null) {
+            $url = 'https://api.github.com/';
+        }
         $this->client = new Client(['base_uri' => $url]);
     }
 

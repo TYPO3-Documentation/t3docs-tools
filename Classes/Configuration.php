@@ -10,8 +10,11 @@ class Configuration
     /** @var array */
     protected $config;
 
-    public function __construct(string $configFile='config.yml')
+    public function __construct(string $configFile = null)
     {
+        if (!$configFile) {
+            $configFile = 'config.yml';
+        }
         $content = file_get_contents($configFile);
         $this->config = yaml_parse($content);
     }

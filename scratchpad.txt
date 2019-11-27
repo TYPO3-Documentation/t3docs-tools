@@ -1,4 +1,0 @@
-# get list of link targets
-
-python -m sphinx.ext.intersphinx objects.inv 
-

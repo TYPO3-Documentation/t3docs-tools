@@ -51,8 +51,31 @@ class ManualsJson
     public function printCount()
     {
         $count = $this->getCount();
-        var_dump($count);
+
+        print("\nStatistics:\n\n");
+
+        if ($count['extensions'] ?? false) {
+            print("Number of extensions listed:\n" . $count['extensions'] . "\n");
+        }
+        if ($count['hasOldUrl'] ?? false) {
+            print("Number of extensions with \"old\" URL:\n" . $count['hasOldUrl'] . "\n");
+        }
+        if ($count['hasNewUrl'] ?? false) {
+            print("Number of extensions with \"new\" URL:\n" . $count['hasNewUrl'] . "\n");
+        }
+        if ($count['hasBoth']) {
+            print("Number of extensions with both:\n" . $count['hasBoth'] . "\n");
+        }
+        if ($count['errors']) {
+            print("Number of errors:\n" . $count['errors'] . "\n");
+        }
+        if (($count['hasOldUrl'] ?? false) && ($count['hasBoth'] ?? false)) {
+            print("Number of remaining extensions with \"old\" URL and no \"new\" URL:\n"
+            . ($count['hasOldUrl'] - $count['hasBoth'])
+            . "\n");
+        }
     }
+
 
     public function isOldUrl(string $url): bool
     {

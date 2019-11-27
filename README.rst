@@ -10,9 +10,9 @@ Suite of tools, mostly for bulk changes in the TYPO3 documentation repositories.
 Installation
 ============
 
-git clone <url to repository>
-cd <dir>
-composer install
+    git clone <url to repository>
+    cd <dir>
+    composer install
 
 Configuration
 =============

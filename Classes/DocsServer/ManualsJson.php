@@ -19,11 +19,6 @@ class ManualsJson
      */
     protected $count;
 
-    public function __construct(string $fileName = null)
-    {
-
-    }
-
     public function readFile(string $fileName = null) : bool
     {
         if ($fileName === null) {
@@ -31,6 +26,9 @@ class ManualsJson
         }
         $this->fileName = $fileName;
 
+        if (!\file_exists($fileName)) {
+            return false;
+        }
 
         $str = file_get_contents($this->fileName);
         if (!$str) {

@@ -27,9 +27,22 @@ archived but should not be maintained any longer.
 Usage
 =====
 
+get-repo-names
+--------------
+
 Show list of currently relevant docs repos::
 
     php get-repo-names.php
+
+get-repo-branches
+-----------------
+
+Show all branches for these repos::
+
+    php get-repo-branches.php
+
+generate-changelog-issue
+------------------------
 
 Create text for an issue including list of tasks to be checked off and link to original issue::
 
@@ -38,4 +51,15 @@ Create text for an issue including list of tasks to be checked off and link to o
 For example::
 
     php generate-changelog-issue.php "https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.1/Index.html"
+
+manuals-json-show-count
+-----------------------
+
+Show information from manuals.json from Intercept::
+
+    cd ~/Downloads
+    wget https://intercept.typo3.com/assets/docs/manuals.json
+     php -f manuals-json-show-count.php ~/Downloads/manuals.json
+
+
 

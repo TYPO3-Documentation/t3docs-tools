@@ -2,6 +2,9 @@
 
 namespace T3docs\T3docsTools;
 
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\Yaml\Exception\ParseException;
+
 class Configuration
 {
     /** @var Configuration */
@@ -17,8 +20,7 @@ class Configuration
             $dirName = dirname($scriptName);
             $configFile = $dirName . '/config.yml';
         }
-        $content = file_get_contents($configFile);
-        $this->config = yaml_parse($content);
+        $this->config = Yaml::parseFile($configFile);
     }
 
     public static function getInstance()

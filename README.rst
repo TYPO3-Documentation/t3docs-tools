@@ -10,6 +10,8 @@ Suite of tools, mostly for bulk changes in the TYPO3 documentation repositories.
 Installation
 ============
 
+.. code-block:: bash
+
     git clone <url to repository>
     cd <dir>
     composer install

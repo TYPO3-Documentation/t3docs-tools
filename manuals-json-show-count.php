@@ -4,7 +4,7 @@ use T3docs\T3docsTools\DocsServer\ManualsJson;
 
 $loader = require 'vendor/autoload.php';
 
-$fileName = null;
+$fileName = 'https://intercept.typo3.com/assets/docs/manuals.json';
 if ($argv[1] ?? false) {
     $fileName = $argv[1];
 }

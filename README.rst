@@ -59,9 +59,25 @@ manuals-json-show-count
 
 Show information from manuals.json from Intercept::
 
+   php -f manuals-json-show-count.php [filename]
+
+
+Example::
+
     cd ~/Downloads
     wget https://intercept.typo3.com/assets/docs/manuals.json
-     php -f manuals-json-show-count.php ~/Downloads/manuals.json
+    php -f manuals-json-show-count.php ~/Downloads/manuals.json
+
+manuals-json-show-ext-info.php
+------------------------------
+
+Show information from manuals.json about an extension::
+
+   php -f manuals-json-show-count.php <extkey> [filename]
 
 
+Example::
 
+    cd ~/Downloads
+    wget https://intercept.typo3.com/assets/docs/manuals.json
+    php -f manuals-json-show-count.php rtehtmlarea ~/Downloads/manuals.json

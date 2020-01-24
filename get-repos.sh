@@ -1,15 +1,16 @@
 #!/bin/bash
 
+# -------------------
 # automatic variables
+# -------------------
 thisdir=$(dirname $0)
 cd $thisdir
 curdir=$(pwd)
+thisdir=$(pwd)
 
 
 # config
-datadir=$curdir/data
-phpdir=$curdir/
-
+source $thisdir/config.sh
 
 function exitMsg()
 {
@@ -17,11 +18,11 @@ function exitMsg()
     exit 1
 }
 
-mkdir -p $datadir || exitMsg "Error creating directory $datadir"
+mkdir -p $generateddir || exitMsg "Error creating directory $generateddir"
 
 php -f $phpdir/get-repo-names.php | while read i;do
     echo $i
-    cd data
+    cd $generateddir
     if [ ! -d $i ];then
         git clone git@github.com:TYPO3-Documentation/$i.git || exitMsg "clone $i"
     fi

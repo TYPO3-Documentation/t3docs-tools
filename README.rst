@@ -4,7 +4,11 @@
 t3doc-tools
 ===========
 
-Suite of tools, mostly for bulk changes in the TYPO3 documentation repositories.
+Suite of tools, mostly for bulk changes in the TYPO3 documentation repositories
+and to output some statistics.
+
+* part of this is written in PHP
+* some of the scripts are written in bash (for command line tool based functionality)
 
 
 Installation
@@ -26,8 +30,8 @@ Documentation repositories typically begin with "TYPO3CMS-"
 config.yml is used to filter out some repositories that are not yet
 archived but should not be maintained any longer.
 
-Usage
-=====
+Usage: PHP
+==========
 
 get-repo-names
 --------------
@@ -59,9 +63,18 @@ manuals-json-show-count
 
 Show information from manuals.json from Intercept::
 
-    cd ~/Downloads
-    wget https://intercept.typo3.com/assets/docs/manuals.json
-     php -f manuals-json-show-count.php ~/Downloads/manuals.json
+    wget -O /tmp/manuals.json https://intercept.typo3.com/assets/docs/manuals.json
+    php -f manuals-json-show-count.php /tmp/manuals.json
+
+Usage: bash scripts
+===================
+
+grepForSettings.sh
+------------------
+
+This searches for a string in Documentation/Settings.cfg in all branches in all repositories
+
+    grepForSettings.sh t3tssyntax
 
 
 

@@ -38,14 +38,32 @@ get-repo-names
 
 Show list of currently relevant docs repos::
 
-    php get-repo-names.php
+    php get-repo-names.php [type]
+
+type can be:
+
+* 'docs' (default): all repositories that are documentation
+* 'all': all repositories
 
 get-repo-branches
 -----------------
 
 Show all branches for these repos::
 
-    php get-repo-branches.php
+    php get-repo-branches.php  [type]
+
+type can be:
+
+* 'docs' (default): all repositories that are documentation
+* 'all': all repositories
+
+get-contributors
+----------------
+
+    php get-contributors.php <year> [GitHub token]
+
+* the token is necessary in order to make several requests to GitHub to get
+  the commits for all repositories
 
 generate-changelog-issue
 ------------------------

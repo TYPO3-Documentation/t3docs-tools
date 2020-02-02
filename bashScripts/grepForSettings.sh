@@ -64,6 +64,8 @@ for repo in TYPO3CMS*;do
 			echo "ERROR: $repo: current branch ($currentbranch) is not branch ($branch)"
 			exit 1
 		fi
+		echo "pull latest changes"
+		git pull origin $branch
 		grepInSettings "$argument"
 		if [ $? -eq 0 ];then
 			echo "grep found in $repo $branch ... abort"

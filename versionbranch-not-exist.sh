@@ -4,6 +4,7 @@
 # -------------------
 # automatic variables
 # -------------------
+
 thisdir=$(dirname $0)
 cd $thisdir
 curdir=$(pwd)
@@ -12,7 +13,6 @@ thisdir=$(pwd)
 
 # config
 source $thisdir/config.sh
-
 
 function usage()
 {
@@ -47,5 +47,4 @@ php -f get-repo-names.php | while read i;do
         then echo "$i missing version $version"
      fi;
      cd $curdir
-
 done

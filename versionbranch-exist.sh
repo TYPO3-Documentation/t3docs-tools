@@ -1,6 +1,7 @@
 #!/bin/bash
 # shows all repositories for which a version branch exists
 
+
 # -------------------
 # automatic variables
 # -------------------
@@ -47,5 +48,4 @@ php -f get-repo-names.php | while read i;do
         then echo "$i missing version $version"
      fi;
      cd $curdir
-
 done

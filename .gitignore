@@ -1,7 +1,8 @@
-data
+generated-data
 vendor
 composer.lock
 manuals.json
 Todo.txt
-Todo.txt
-generated-data
+contributors*.csv
+config-generated.yml
+

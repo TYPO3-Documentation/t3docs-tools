@@ -87,12 +87,22 @@ Show information from manuals.json from Intercept::
 Usage: bash scripts
 ===================
 
+in bashScripts
+
+get-repos.sh
+------------
+
+Get all repositories. Clones repositories in generated-data/repos
+
 grepForSettings.sh
 ------------------
 
 This searches for a string in Documentation/Settings.cfg in all branches in all repositories
 
     grepForSettings.sh t3tssyntax
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
+
 
 
 

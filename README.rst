@@ -70,11 +70,24 @@ generate-changelog-issue
 
 Create text for an issue including list of tasks to be checked off and link to original issue::
 
-    php generate-changelog-issue.php <url to changelog>
+    php generate-changelog-issue.php <url to changelog or version> [changelog issue in T3DocsTeam]
 
-For example::
+
+Examples:
+
+Create the text for a changelog issue for version 10.1::
+
 
     php generate-changelog-issue.php "https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.1/Index.html"
+
+or::
+
+    php generate-changelog-issue.php "10.1"
+
+Show only the changelogs that are not yet included in issue 121 for  (master)::
+
+    php generate-changelog-issue.php "master" 121
+
 
 manuals-json-show-count
 -----------------------

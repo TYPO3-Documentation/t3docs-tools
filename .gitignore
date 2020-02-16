@@ -6,3 +6,4 @@ Todo.txt
 contributors*.csv
 config-generated.yml
 
+*.log

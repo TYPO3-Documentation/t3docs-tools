@@ -105,10 +105,7 @@ class GitHubApi
             $responseHeaders = $response->getHeaders();
             if ($responseHeaders['Link'] ?? false) {
                 $linkHeader = $responseHeaders['Link'];
-                print("link header\n");
-                var_dump($linkHeader);
                 $newUrl = $this->getNextPage($linkHeader);
-                print("next url=$newUrl\n");
             } else {
                 $newUrl = '';
             }

@@ -154,7 +154,6 @@ class GithubRepository
         $params = '?since=' . $startDate->format(\DateTime::ATOM);
         $params .= '&until=' . $endDate->format(\DateTime::ATOM);
         $commitsUrl = str_replace('{/sha}', $params, $commitsUrl);
-        print("$repoName: commitsUrl=$commitsUrl\n");
         return $this->api->getAllWithPagination($commitsUrl);
     }
 
@@ -170,16 +169,7 @@ class GithubRepository
         $contributors = [];
 
         foreach ($names as $name) {
-            /*
-            if ($name !== 'TYPO3CMS-Reference-CoreApi') {
-                continue;
-            }
-            */
-
             $commits = $this->getCommits($name, $year, $month);
-            print("repo=$name,");
-
-            print("number of commits" . count($commits) . "\n");
 
             foreach ($commits as $commit) {
                 $id = $commit['author']['id'];

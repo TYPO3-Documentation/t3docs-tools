@@ -26,10 +26,6 @@ class ManualsJson
         }
         $this->fileName = $fileName;
 
-        if (!\file_exists($fileName)) {
-            return false;
-        }
-
         $str = file_get_contents($this->fileName);
         if (!$str) {
             return false;

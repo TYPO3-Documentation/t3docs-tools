@@ -94,8 +94,22 @@ manuals-json-show-count
 
 Show information from manuals.json from Intercept::
 
+   php -f manuals-json-show-count.php [filename]
+
+
+Example::
+
+    cd ~/Downloads
+    wget https://intercept.typo3.com/assets/docs/manuals.json
+    php -f manuals-json-show-count.php ~/Downloads/manuals.json
+
+manuals-json-show-ext-info.php
+------------------------------
+
+::
+
     wget -O /tmp/manuals.json https://intercept.typo3.com/assets/docs/manuals.json
-    php -f manuals-json-show-count.php /tmp/manuals.json
+    php -f manuals-json-show-count.php rtehtmlarea /tmp/manuals.json
 
 Usage: bash scripts
 ===================
@@ -115,7 +129,3 @@ This searches for a string in Documentation/Settings.cfg in all branches in all 
     grepForSettings.sh t3tssyntax
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
-
-
-
-

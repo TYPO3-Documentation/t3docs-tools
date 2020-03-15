@@ -7,7 +7,12 @@ $loader = require 'vendor/autoload.php';
 
 $config = Configuration::getInstance()->getConfiguration();
 
-$gitRepository = new GithubRepository();
+$type = 'docs';
+if ($argv[1] ?? false) {
+    $type = $argv[1];
+}
+
+$gitRepository = new GithubRepository($type);
 $names = $gitRepository->getNames();
 foreach($names as $name) {
     print("$name\n");

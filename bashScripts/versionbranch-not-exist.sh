@@ -1,7 +1,17 @@
 #!/bin/bash
 # shows all repositories for which a specific version branch does not exist
 
-curdir=$(pwd)
+# -------------------
+# automatic variables
+# -------------------
+
+thisdir=$(dirname $0)
+cd $thisdir
+thisdir=$(pwd)
+
+
+# config
+source $thisdir/config.sh
 
 function usage()
 {
@@ -22,7 +32,7 @@ fi
 version=$1
 
 php -f get-repo-names.php | while read i;do
-    cd data
+    cd $repodir
 
     if [ ! -d $i ];then
         echo "$i does not exist, fetch repos first"
@@ -35,6 +45,5 @@ php -f get-repo-names.php | while read i;do
     if [ $? -ne 0 ];
         then echo "$i missing version $version"
      fi;
-     cd $curdir
-
+     cd $thisdir
 done

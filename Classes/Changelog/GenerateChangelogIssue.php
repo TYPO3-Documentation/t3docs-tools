@@ -85,7 +85,7 @@ class GenerateChangelogIssue
      *
      * @return string
      */
-    public function getChangesFromIssue(int $id, string $repo='T3DocTeam') : array
+    public function getChangesFromIssue(int $id, string $repo='TYPO3CMS-Reference-CoreApi') : array
     {
         $url = "https://api.github.com/repos/TYPO3-Documentation/$repo/issues/$id";
 

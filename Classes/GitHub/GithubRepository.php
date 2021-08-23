@@ -189,7 +189,7 @@ class GithubRepository
 
     public function remoteBranchExists(string $name, string $branch) : bool
     {
-        //git ls-remote --heads git@github.com:user/repo.git branch-name
+        //git ls-remote --heads git://github.com/user/repo.git branch-name
         //"branches_url": "https://api.github.com/repos/TYPO3-Documentation/DocsTypo3Org-Homepage/branches{/branch}",
 
         $branches = $this->getBranchInfosForRepoName($name);

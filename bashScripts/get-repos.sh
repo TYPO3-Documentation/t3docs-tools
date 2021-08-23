@@ -23,7 +23,7 @@ php -f $phpdir/get-repo-names.php | while read i;do
     echo "Getting repo $i ..."
     cd $repodir
     if [ ! -d $i ];then
-        git clone git@github.com:TYPO3-Documentation/$i.git || exitMsg "clone $i"
+        git clone git://github.com/TYPO3-Documentation/$i.git || exitMsg "clone $i"
     else
         echo "$i already exists, get latest version"
         cd $i

@@ -1,3 +1,5 @@
+/.idea/
+
 generated-data
 vendor
 composer.lock

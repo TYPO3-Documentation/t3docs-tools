@@ -128,9 +128,14 @@ The bash scripts are located in subfolder bashScripts/.
 get-repos.sh
 ------------
 
-Clones all TYPO3 documentation repositories from remote to local folder generated-data/repos/::
+Clones all TYPO3 documentation repositories (all) or only those starting with \"TYPO3CMS-\" (docs)
+from remote to local folder generated-data/repos/::
 
-    ./bashScripts/get-repos.sh
+    ./bashScripts/get-repos.sh [<type>]
+
+Example::
+
+    ./bashScripts/get-repos.sh docs
 
 grep-for-settings.sh
 --------------------

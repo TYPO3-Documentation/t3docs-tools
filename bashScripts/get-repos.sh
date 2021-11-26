@@ -7,9 +7,17 @@ thisdir=$(dirname $0)
 cd $thisdir
 thisdir=$(pwd)
 
-
 # config
 source $thisdir/config.sh
+
+function usage()
+{
+	echo "Usage: $0 [<type>]"
+	echo ""
+	echo "Arguments:"
+	echo "   type: Fetch all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"all\"]"
+	exit 1
+}
 
 function exitMsg()
 {
@@ -17,9 +25,14 @@ function exitMsg()
     exit 1
 }
 
+type="${1:-all}"
+if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
+    usage
+fi
+
 mkdir -p $repodir || exitMsg "Error creating directory $repodir"
 
-php -f $phpdir/get-repo-names.php | while read i;do
+php -f $phpdir/get-repo-names.php $type | while read i;do
     echo "Getting repo $i ..."
     cd $repodir
     if [ ! -d $i ];then

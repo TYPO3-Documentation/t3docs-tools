@@ -151,6 +151,19 @@ Example::
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
+search-repos.sh
+---------------
+
+Execute a custom search command in all branches of all local repositories::
+
+    ./bashScripts/search-repos.sh <command>
+
+Example::
+
+    ./bashScripts/search-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ."
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
+
 versionbranch-exist.sh
 ----------------------
 

@@ -149,7 +149,7 @@ Example::
 
     ./bashScripts/grep-for-settings.sh t3tssyntax
 
-The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
 versionbranch-exist.sh
 ----------------------
@@ -162,7 +162,7 @@ Example::
 
     ./bashScripts/versionbranch-exist.sh "7.6"
 
-The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
 versionbranch-not-exist.sh
 --------------------------
@@ -175,4 +175,4 @@ Example::
 
     ./bashScripts/versionbranch-not-exist.sh "11.5"
 
-The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.

@@ -25,11 +25,6 @@ function exitMsg()
     exit 1
 }
 
-function grepInSettings()
-{
-	grep "$argument" Documentation/Settings.cfg
-}
-
 function log()
 {
 	msg="$1"
@@ -45,42 +40,47 @@ fi
 
 argument="$1"
 
+stopOnFirstHit=1
+
+echo "Search for \"$argument\" in Documentation/Settings.cfg of local repositories of "
+echo "$repodir/."
+echo "------------------------------------------------------------------------"
+
 cd "$repodir"
 for repo in TYPO3CMS*; do
-	echo "$repodir/$repo"
+    latestbranch=""
 	cd "$repodir/$repo"
-	for branch in master 9.5 8.7 7.6 6.2; do
-		log "repo=$repo, check for branch=$branch"
-		log "check for local branch"
-		exists=0;
-		git show-ref --verify --quiet refs/heads/$branch
-		if [ $? -ne 0 ]; then
-			log "check for remote branch: $branch"
-			git ls-remote -q --exit-code --heads origin $branch
-			if [ $? -eq 0 ]; then
-				exists=1
-				git checkout $branch
-			fi
-		else
-			log "local branch exists: $repo $branch"
-			exists=1
-			git checkout $branch
-		fi
-		if [ $exists -ne 1 ]; then
-			log "branch $branch does not exist, continue"
-			continue
-		fi
-		currentbranch=$(git rev-parse --abbrev-ref HEAD)
-		if [[ $currentbranch != $branch ]]; then
-		    exitMsg "$repo: current branch ($currentbranch) is not branch ($branch)"
-		fi
-		echo "pull latest changes"
-		git pull origin $branch
-		grepInSettings "$argument"
+	for branch in master main 11.5 10.4 9.5 8.7 7.6; do
+	    # Checkout and update current branch
+	    exists=$(git branch -a --list "$branch" --list "origin/$branch")
+	    if [ -n "$exists" ]; then
+            echo "$repo ($branch): Searching .."
+            git checkout $branch || exitMsg "checkout $branch in $repo"
+            git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
+        else
+            continue
+        fi
+		if [ -z "$latestbranch" ]; then
+            latestbranch="$branch"
+        fi
+        # Search
+		grep "$argument" Documentation/Settings.cfg
 		if [ $? -eq 0 ]; then
-			echo "grep found in $repo $branch ... abort"
-			exit 0
+            echo "$repo ($branch): Word \"$argument\" found in Documentation/Settings.cfg."
+		    if [ $stopOnFirstHit -eq 1 ]; then
+                echo "Stopping on first hit."
+                if [ -n "$latestbranch" ]; then
+                    git checkout $latestbranch
+                fi
+                exit 0
+            fi
+		else
+		    echo "$repo ($branch): Miss."
 		fi
     done
+    if [ -n "$latestbranch" ]; then
+        git checkout $latestbranch
+    fi
+    echo "------------------------------------------------------------------------"
 done
 	

@@ -7,15 +7,22 @@ thisdir=$(dirname $0)
 cd $thisdir
 thisdir=$(pwd)
 
-
 # config
 source $thisdir/config.sh
-
 
 function usage()
 {
 	echo "Usage: $0 <argument>"
-	exit 1
+    echo ""
+    echo "Arguments:"
+    echo "   argument: Search for this string in the Documentation/Settings.cfg files of the local repositories."
+    exit 1
+}
+
+function exitMsg()
+{
+    echo "ERROR: $*"
+    exit 1
 }
 
 function grepInSettings()
@@ -28,25 +35,29 @@ function log()
 	msg="$1"
 }
 
-if [ $# -ne 1 ];then
+if [ $# -ne 1 ]; then
 	usage
+fi
+
+if [ ! -d "$repodir" ]; then
+    exitMsg "The TYPO3 documentation repositories are not pulled to \"$repodir\" yet. Run get-repos.sh first."
 fi
 
 argument="$1"
 
-cd $repodir
-for repo in TYPO3CMS*;do
-	echo "$repodir,$repo"
-	cd $repodir/$repo
-	for branch in master 9.5 8.7 7.6 6.2;do
+cd "$repodir"
+for repo in TYPO3CMS*; do
+	echo "$repodir/$repo"
+	cd "$repodir/$repo"
+	for branch in master 9.5 8.7 7.6 6.2; do
 		log "repo=$repo, check for branch=$branch"
 		log "check for local branch"
 		exists=0;
 		git show-ref --verify --quiet refs/heads/$branch
-		if [ $? -ne 0 ];then
+		if [ $? -ne 0 ]; then
 			log "check for remote branch: $branch"
 			git ls-remote -q --exit-code --heads origin $branch
-			if [ $? -eq 0 ];then
+			if [ $? -eq 0 ]; then
 				exists=1
 				git checkout $branch
 			fi
@@ -55,23 +66,21 @@ for repo in TYPO3CMS*;do
 			exists=1
 			git checkout $branch
 		fi
-		if [ $exists -ne 1 ];then
+		if [ $exists -ne 1 ]; then
 			log "branch $branch does not exist, continue"
 			continue
 		fi
 		currentbranch=$(git rev-parse --abbrev-ref HEAD)
-		if [[ $currentbranch != $branch ]];then
-			echo "ERROR: $repo: current branch ($currentbranch) is not branch ($branch)"
-			exit 1
+		if [[ $currentbranch != $branch ]]; then
+		    exitMsg "$repo: current branch ($currentbranch) is not branch ($branch)"
 		fi
 		echo "pull latest changes"
 		git pull origin $branch
 		grepInSettings "$argument"
-		if [ $? -eq 0 ];then
+		if [ $? -eq 0 ]; then
 			echo "grep found in $repo $branch ... abort"
 			exit 0
 		fi
-        done
-
+    done
 done
 	

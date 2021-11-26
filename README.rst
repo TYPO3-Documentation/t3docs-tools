@@ -140,13 +140,39 @@ Example::
 grep-for-settings.sh
 --------------------
 
-This searches for a string in Documentation/Settings.cfg in all branches of all local repositories
-and stops on first hit::
+This searches for a string in Documentation/Settings.cfg in all branches of those local repositories
+starting with \"TYPO3CMS-\" and stops on first hit::
 
     ./bashScripts/grep-for-settings.sh <string>
 
 Example::
 
     ./bashScripts/grep-for-settings.sh t3tssyntax
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
+
+versionbranch-exist.sh
+----------------------
+
+Lists all local repositories for which a specific version branch exists::
+
+    ./bashScripts/versionbranch-exist.sh <version>
+
+Example::
+
+    ./bashScripts/versionbranch-exist.sh "7.6"
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh first.
+
+versionbranch-not-exist.sh
+--------------------------
+
+Lists all local repositories for which a specific version branch does not exist::
+
+    ./bashScripts/versionbranch-not-exist.sh <version>
+
+Example::
+
+    ./bashScripts/versionbranch-not-exist.sh "11.5"
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh first.

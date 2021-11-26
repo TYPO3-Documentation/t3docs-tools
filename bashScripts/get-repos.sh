@@ -30,7 +30,9 @@ if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
     usage
 fi
 
-mkdir -p $repodir || exitMsg "Error creating directory $repodir"
+if ! mkdir -p "$repodir"; then
+    exitMsg "Error creating directory \"$repodir\"."
+fi
 
 php -f $phpdir/get-repo-names.php $type | while read i;do
     echo "Getting repo $i ..."

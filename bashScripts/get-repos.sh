@@ -34,22 +34,34 @@ if ! mkdir -p "$repodir"; then
     exitMsg "Error creating directory \"$repodir\"."
 fi
 
-php -f $phpdir/get-repo-names.php $type | while read i;do
-    echo "Getting repo $i ..."
-    cd $repodir
-    if [ ! -d $i ];then
-        git clone git@github.com:TYPO3-Documentation/$i.git || exitMsg "clone $i"
+echo "Clone or update local repositories in $repodir/."
+echo "-------------------------"
+
+php -f $phpdir/get-repo-names.php $type | while read repo; do
+    cd "$repodir"
+    if [ ! -d "$repo" ]; then
+        echo "Cloning repo $repo."
+        git clone git@github.com:TYPO3-Documentation/$repo.git || exitMsg "clone $repo"
     else
-        echo "$i already exists, get latest version"
-        cd $i
-        git checkout master || exitMsg "checkout master in $i"
-        git reset --hard origin/master || exitMsg "fetch reset --hard origin/master in $i"
-        git pull origin master || exitMsg "fetch pull origin master in $i"
-        cd ..
+        echo "$repo already exists: Update remote tracking branches, checkout and update main branch."
+        # Update remote tracking branches
+        cd "$repo"
+        git fetch || exitMsg "fetch $repo"
+        # Checkout and update main branch
+        mainbranch=""
+        for branch in master main; do
+            git show-ref --verify --quiet refs/heads/$branch
+            if [ $? -eq 0 ]; then
+                mainbranch="$branch"
+                continue
+            fi
+        done
+        if [ -n "$mainbranch" ]; then
+            git checkout $mainbranch || exitMsg "checkout $mainbranch in $repo"
+            git reset --hard origin/$mainbranch || exitMsg "fetch reset --hard origin/$mainbranch in $repo"
+        else
+            echo "The $repo repo is not yet initialized because it lacks a main branch."
+        fi
     fi
-    cd $i
-    git fetch || exitMsg "fetch $i"
-    cd $thisdir
     echo "-------------------------"
-    echo " "
 done

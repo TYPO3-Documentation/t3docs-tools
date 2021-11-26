@@ -128,16 +128,16 @@ Clones all TYPO3 documentation repositories from remote to local folder generate
 
     ./bashScripts/get-repos.sh
 
-grepForSettings.sh
-------------------
+grep-for-settings.sh
+--------------------
 
 This searches for a string in Documentation/Settings.cfg in all branches of all local repositories
 and stops on first hit::
 
-    ./bashScripts/grepForSettings.sh <string>
+    ./bashScripts/grep-for-settings.sh <string>
 
 Example::
 
-    ./bashScripts/grepForSettings.sh t3tssyntax
+    ./bashScripts/grep-for-settings.sh t3tssyntax
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh first.

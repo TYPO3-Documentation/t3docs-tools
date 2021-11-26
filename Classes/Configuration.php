@@ -43,12 +43,7 @@ class Configuration
 
     public function getIgnoredRepos() : array
     {
-        $config = $this->config;
-        return array_merge(
-            $config['github']['repos']['ignore'],
-            $config['github']['repos']['merged'],
-            $config['github']['repos']['nobranch']
-        );
+        return $this->config['github']['repos']['ignore'] ?? [];
     }
 
 }

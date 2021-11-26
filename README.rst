@@ -29,6 +29,10 @@ Documentation repositories typically begin with "TYPO3CMS-".
 The config.yml file is used to filter out some repositories that are not yet
 archived but should not be maintained any longer.
 
+The bashScripts/config.sh file configures the local folder of the cloned repositories,
+which is generated-data/repos/ by default. The settings can be overridden with a custom
+bashScripts/config.local.sh file.
+
 Usage: PHP
 ==========
 

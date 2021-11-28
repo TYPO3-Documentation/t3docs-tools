@@ -12,7 +12,7 @@ source $thisdir/config.sh
 
 function usage()
 {
-	echo "Usage: $0 <command>"
+    echo "Usage: $0 <command>"
     echo ""
     echo "Arguments:"
     echo "   command: Execute this search command in all branches of all local repositories."
@@ -26,7 +26,7 @@ function exitMsg()
 }
 
 if [ $# -ne 1 ]; then
-	usage
+    usage
 fi
 
 if [ ! -d "$repodir" ]; then
@@ -48,27 +48,27 @@ echo "------------------------------------------------------------------------"
 
 cd "$repodir"
 for repo in *; do
-	latestbranch=""
-	cd "$repodir/$repo"
-	for branch in master main 11.5 10.4 9.5 8.7 7.6; do
-	    # Checkout and update current branch
-	    exists=$(git branch -a --list "$branch" --list "origin/$branch")
-	    if [ -n "$exists" ]; then
+    latestbranch=""
+    cd "$repodir/$repo"
+    for branch in master main 11.5 10.4 9.5 8.7 7.6; do
+        # Checkout and update current branch
+        exists=$(git branch -a --list "$branch" --list "origin/$branch")
+        if [ -n "$exists" ]; then
             git checkout $branch || exitMsg "checkout $branch in $repo"
             git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
         else
             continue
         fi
-		if [ -z "$latestbranch" ]; then
+        if [ -z "$latestbranch" ]; then
             latestbranch="$branch"
         fi
         # Search
-		result=$(eval "$cmd")
-		resultNum=$(echo "$result" | wc -l)
-		if [ -n "$result" ] ; then
+        result=$(eval "$cmd")
+        resultNum=$(echo "$result" | wc -l)
+        if [ -n "$result" ] ; then
             echo "------------------------------------------------------------------------"
             echo "$repo ($branch): $resultNum search results."
-		    if [ $quiet -ne 1 ] ; then
+            if [ $quiet -ne 1 ] ; then
                 echo "------------------------------------------------------------------------"
                 echo "$result"
             fi

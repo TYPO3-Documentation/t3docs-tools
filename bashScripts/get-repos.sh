@@ -12,11 +12,11 @@ source $thisdir/config.sh
 
 function usage()
 {
-	echo "Usage: $0 [<type>]"
-	echo ""
-	echo "Arguments:"
-	echo "   type: Fetch all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"all\"]"
-	exit 1
+    echo "Usage: $0 [<type>]"
+    echo ""
+    echo "Arguments:"
+    echo "   type: Fetch all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"all\"]"
+    exit 1
 }
 
 function exitMsg()

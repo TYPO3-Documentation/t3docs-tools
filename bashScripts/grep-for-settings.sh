@@ -12,7 +12,7 @@ source $thisdir/config.sh
 
 function usage()
 {
-	echo "Usage: $0 <argument>"
+    echo "Usage: $0 <argument>"
     echo ""
     echo "Arguments:"
     echo "   argument: Search for this string in the Documentation/Settings.cfg files of the local repositories."
@@ -27,11 +27,11 @@ function exitMsg()
 
 function log()
 {
-	msg="$1"
+    msg="$1"
 }
 
 if [ $# -ne 1 ]; then
-	usage
+    usage
 fi
 
 if [ ! -d "$repodir" ]; then
@@ -49,34 +49,34 @@ echo "------------------------------------------------------------------------"
 cd "$repodir"
 for repo in TYPO3CMS*; do
     latestbranch=""
-	cd "$repodir/$repo"
-	for branch in master main 11.5 10.4 9.5 8.7 7.6; do
-	    # Checkout and update current branch
-	    exists=$(git branch -a --list "$branch" --list "origin/$branch")
-	    if [ -n "$exists" ]; then
+    cd "$repodir/$repo"
+    for branch in master main 11.5 10.4 9.5 8.7 7.6; do
+        # Checkout and update current branch
+        exists=$(git branch -a --list "$branch" --list "origin/$branch")
+        if [ -n "$exists" ]; then
             echo "$repo ($branch): Searching .."
             git checkout $branch || exitMsg "checkout $branch in $repo"
             git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
         else
             continue
         fi
-		if [ -z "$latestbranch" ]; then
+        if [ -z "$latestbranch" ]; then
             latestbranch="$branch"
         fi
         # Search
-		grep "$argument" Documentation/Settings.cfg
-		if [ $? -eq 0 ]; then
+        grep "$argument" Documentation/Settings.cfg
+        if [ $? -eq 0 ]; then
             echo "$repo ($branch): Word \"$argument\" found in Documentation/Settings.cfg."
-		    if [ $stopOnFirstHit -eq 1 ]; then
+            if [ $stopOnFirstHit -eq 1 ]; then
                 echo "Stopping on first hit."
                 if [ -n "$latestbranch" ]; then
                     git checkout $latestbranch
                 fi
                 exit 0
             fi
-		else
-		    echo "$repo ($branch): Miss."
-		fi
+        else
+            echo "$repo ($branch): Miss."
+        fi
     done
     if [ -n "$latestbranch" ]; then
         git checkout $latestbranch

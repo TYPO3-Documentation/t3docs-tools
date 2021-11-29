@@ -10,36 +10,7 @@ github:
     baseURl:  https://api.github.com/
     listRepos: /users/TYPO3-Documentation/repos?per_page=100
   repos:
-
-    # repos merged into TYPO3 Explained
-    merged:
-      - TYPO3CMS-Reference-CodingGuidelines
-      - TYPO3CMS-Reference-FileAbstractionLayer
-      - TYPO3CMS-Reference-InsideTypo3
-      - TYPO3CMS-Reference-Skinning
-      - TYPO3CMS-Reference-Typo3Services
-      - TYPO3CMS-Reference-TyposcriptSyntax
-      - TYPO3CMS-Guide-Security
     ignore:
+      - TYPO3CMS-Reference-FileAbstractionLayer
       - TYPO3CMS-Tutorial-CreatingExtensions
       - TYPO3CMS-Guide-Extbase
-    outdated:
-      - TYPO3CMS-Guide-Extbase
-
-    draft:
-      - TYPO3CMS-Tutorial-CreatingExtensions
-
-    # these repos have no version branches
-    nobranch:
-      - TYPO3CMS-Guide-ContributionWorkflow
-      - TYPO3CMS-Guide-HowToDocument
-      - TYPO3CMS-Example-ExtensionManual
-      - TYPO3CMS-Guide-RenderTypo3Documentation
-      - TYPO3CMS-Snippets
-      - TYPO3CMS-TellMeSomethingAbout
-#      - TYPO3CMS-Reference-ViewHelper
-
-    # repos that are not documentation repositories, e.g. code examples
-    nondocs:
-      - TYPO3CMS-Tutorial-SitePackage-Code
-      - TYPO3CMS-Tutorial-Templating-Files

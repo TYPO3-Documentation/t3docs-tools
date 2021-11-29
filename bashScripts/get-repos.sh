@@ -7,9 +7,17 @@ thisdir=$(dirname $0)
 cd $thisdir
 thisdir=$(pwd)
 
-
 # config
 source $thisdir/config.sh
+
+function usage()
+{
+    echo "Usage: $0 [<type>]"
+    echo ""
+    echo "Arguments:"
+    echo "   type: Fetch all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"all\"]"
+    exit 1
+}
 
 function exitMsg()
 {
@@ -17,24 +25,44 @@ function exitMsg()
     exit 1
 }
 
-mkdir -p $repodir || exitMsg "Error creating directory $repodir"
+type="${1:-all}"
+if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
+    usage
+fi
 
-php -f $phpdir/get-repo-names.php | while read i;do
-    echo "Getting repo $i ..."
-    cd $repodir
-    if [ ! -d $i ];then
-        git clone git@github.com:TYPO3-Documentation/$i.git || exitMsg "clone $i"
+if ! mkdir -p "$repodir"; then
+    exitMsg "Error creating directory \"$repodir\"."
+fi
+
+echo "Clone or update local repositories of"
+echo "$repodir/."
+echo "------------------------------------------------------------------------"
+
+php -f $phpdir/get-repo-names.php $type | while read repo; do
+    cd "$repodir"
+    if [ ! -d "$repo" ]; then
+        echo "Cloning repo $repo."
+        git clone git@github.com:TYPO3-Documentation/$repo.git || exitMsg "clone $repo"
     else
-        echo "$i already exists, get latest version"
-        cd $i
-        git checkout master || exitMsg "checkout master in $i"
-        git reset --hard origin/master || exitMsg "fetch reset --hard origin/master in $i"
-        git pull origin master || exitMsg "fetch pull origin master in $i"
-        cd ..
+        echo "$repo already exists: Update remote tracking branches, checkout and update main branch."
+        cd "$repo"
+        # Update remote tracking branches
+        git fetch || exitMsg "fetch $repo"
+        # Checkout and update main branch
+        mainbranch=""
+        for branch in master main; do
+            exists=$(git branch -a --list "$branch" --list "origin/$branch")
+            if [ -n "$exists" ]; then
+                mainbranch="$branch"
+                break
+            fi
+        done
+        if [ -n "$mainbranch" ]; then
+            git checkout $mainbranch || exitMsg "checkout $mainbranch in $repo"
+            git reset --hard origin/$mainbranch || exitMsg "reset --hard origin/$mainbranch in $repo"
+        else
+            echo "The $repo repo is not yet initialized because it lacks a main branch."
+        fi
     fi
-    cd $i
-    git fetch || exitMsg "fetch $i"
-    cd $thisdir
-    echo "-------------------------"
-    echo " "
+    echo "------------------------------------------------------------------------"
 done

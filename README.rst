@@ -4,11 +4,11 @@
 t3doc-tools
 ===========
 
-Suite of tools, mostly for bulk changes in the TYPO3 documentation repositories
-and to output some statistics.
+Suite of tools, mostly for bulk changes in the repositories of the TYPO3 Documentation
+Team and the TYPO3 Core Team, and to output some statistics, where
 
-* part of this is written in PHP (focused on remote actions in GitHub)
-* some of them are bash scripts (focused on local actions in the cloned repositories)
+* part of this is written in PHP (focused on remote actions in GitHub) and
+* some of them are bash scripts (focused on local actions in the cloned repositories).
 
 Installation
 ============
@@ -22,9 +22,15 @@ Installation
 Configuration
 =============
 
-There are several repositories in https://github.com/TYPO3-Documentation.
+There are several repositories in
 
-Documentation repositories typically begin with "TYPO3CMS-".
+* https://github.com/TYPO3-Documentation and
+* https://github.com/TYPO3
+
+which are the home of the TYPO3 Documentation Team and the TYPO3 Core Team respectively.
+
+The names of the documentation manual repositories usually start with "TYPO3CMS-".
+These can be processed specifically.
 
 The config.yml file is used to filter out some repositories that are not yet
 archived but should not be maintained any longer.
@@ -32,6 +38,15 @@ archived but should not be maintained any longer.
 The bashScripts/config.sh file configures the local folder of the cloned repositories,
 which is generated-data/repos/ by default. The settings can be overridden with a custom
 bashScripts/config.local.sh file.
+
+The local repositories of each GitHub user namespace (currently "typo3-documentation" and "typo3")
+are cloned into local subfolders following the pattern generated-data/repos/<user>,
+i.e. currently into
+
+* generated-data/repos/typo3-documentation/ and
+* generated-data/repos/typo3/,
+
+– for separate and general processing.
 
 Usage: PHP
 ==========
@@ -41,36 +56,53 @@ The PHP scripts are located in the project root folder.
 get-repo-names.php
 ------------------
 
-Show list of currently relevant docs repos::
+List the remote repos::
 
-    php get-repo-names.php [<type>]
+    php get-repo-names.php [<type>] [<user>] [<token>]
 
-type can be:
+    Arguments:
+       type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
-* 'docs' (default): all repositories that are documentation, i.e. the names begin with "TYPO3CMS-"
-* 'all': all repositories
+Example::
+
+    php get-repo-names.php docs typo3-documentation
 
 get-repo-branches.php
 ---------------------
 
-Show all branches for these repos::
+List the branches of the remote repos::
 
-    php get-repo-branches.php [<type>]
+    php get-repo-branches.php [<type>] [<user>] [<token>]
 
-type can be:
+    Arguments:
+       type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
-* 'docs' (default): all repositories that are documentation, i.e. the names begin with "TYPO3CMS-"
-* 'all': all repositories
+Example::
+
+    php get-repo-branches.php all typo3
 
 get-contributors.php
 --------------------
 
-Fetch the list of contributors of the repos::
+List the contributors of the remote repos or a specific repo::
 
-    php get-contributors.php <year> [<GitHub token>]
+    php get-contributors.php [<year>] [<month>] [<type>] [<user>] [<repo>] [<token>]
 
-The GitHub token is necessary in order to make several requests to GitHub to get
-the commits of all repositories.
+    Arguments:
+       year: Consider commits of this year, "0" means the current year. [default: "0"]
+       month: Consider commits of this month, "0" means all months. [default: "0"]
+       type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       repo: Consider commits of this specific repository, "" means of all repositories. [default: ""]
+       token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
+
+Example::
+
+    php get-contributors.php 2021 8 all typo3-documentation t3docs-screenshots
 
 generate-changelog-issue.php
 ----------------------------
@@ -131,11 +163,16 @@ get-repos.sh
 Clones all TYPO3 documentation repositories (all) or only those starting with \"TYPO3CMS-\" (docs)
 from remote to local folder generated-data/repos/::
 
-    ./bashScripts/get-repos.sh [<type>]
+    ./bashScripts/get-repos.sh [<type>] [<user>] [<token>]
+
+    Arguments:
+       type: Fetch all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "all"]
+       user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
 
-    ./bashScripts/get-repos.sh docs
+    ./bashScripts/get-repos.sh docs typo3-documentation
 
 grep-for-settings.sh
 --------------------
@@ -143,11 +180,15 @@ grep-for-settings.sh
 This searches for a string in Documentation/Settings.cfg in all branches of those local repositories
 starting with \"TYPO3CMS-\" and stops on first hit::
 
-    ./bashScripts/grep-for-settings.sh <string>
+    ./bashScripts/grep-for-settings.sh <argument> [<user>]
+
+    Arguments:
+       argument: Search for this string in the Documentation/Settings.cfg files of the local repositories.
+       user: Search in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
 
 Example::
 
-    ./bashScripts/grep-for-settings.sh t3tssyntax
+    ./bashScripts/grep-for-settings.sh t3tssyntax typo3-documentation
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -156,11 +197,15 @@ search-repos.sh
 
 Execute a custom search command in all branches of all local repositories::
 
-    ./bashScripts/search-repos.sh <command>
+    ./bashScripts/search-repos.sh <command> [<user>]
+
+    Arguments:
+       command: Execute this search command in all branches of all local repositories.
+       user: Execute the search command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
 
 Example::
 
-    ./bashScripts/search-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ."
+    ./bashScripts/search-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ." all
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -169,11 +214,15 @@ versionbranch-exist.sh
 
 Lists all local repositories for which a specific version branch exists::
 
-    ./bashScripts/versionbranch-exist.sh <version>
+    ./bashScripts/versionbranch-exist.sh <version> [<user>]
+
+    Arguments:
+       version: List all local repositories having a branch matching this version.
+       user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
 
 Example::
 
-    ./bashScripts/versionbranch-exist.sh "7.6"
+    ./bashScripts/versionbranch-exist.sh "7.6" typo3
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -182,10 +231,14 @@ versionbranch-not-exist.sh
 
 Lists all local repositories for which a specific version branch does not exist::
 
-    ./bashScripts/versionbranch-not-exist.sh <version>
+    ./bashScripts/versionbranch-not-exist.sh <version> [<user>]
+
+    Arguments:
+       version: List all local repositories not having a branch matching this version.
+       user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
 
 Example::
 
-    ./bashScripts/versionbranch-not-exist.sh "11.5"
+    ./bashScripts/versionbranch-not-exist.sh "11.5" typo3-documentation
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.

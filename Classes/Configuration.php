@@ -3,7 +3,6 @@
 namespace T3docs\T3docsTools;
 
 use Symfony\Component\Yaml\Yaml;
-use Symfony\Component\Yaml\Exception\ParseException;
 
 class Configuration
 {
@@ -31,19 +30,9 @@ class Configuration
         return self::$instance;
     }
 
-    public function getConfiguration() : array
+    public function getIgnoredRepos(string $user): array
     {
-        return $this->config;
-    }
-
-    public function getRepositoriesUrl()
-    {
-        return $this->config['github']['cmd']['listRepos'];
-    }
-
-    public function getIgnoredRepos() : array
-    {
-        return $this->config['github']['repos']['ignore'] ?? [];
+        return $this->config['github']['repos'][$user]['ignore'] ?? [];
     }
 
 }

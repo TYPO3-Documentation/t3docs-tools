@@ -3,64 +3,65 @@
 namespace T3docs\T3docsTools\GitHub;
 
 use GuzzleHttp\Client;
-use GuzzleHttp\Psr7\Request;
-use Psr\Http\Message\ResponseInterface;
+use GuzzleHttp\Exception\ClientException;
 
 class GitHubApi
 {
+    /**
+     * @var Client Guzzle HTTP client
+     */
     protected $client;
 
     /**
-     * If not used, the number of requests will be limited
-     *
      * @var string GitHub access token
      */
     protected $token;
 
-    public function __construct(string $url = null, string $token = null)
+    /**
+     * @param string $token GitHub access token
+     */
+    public function __construct(string $token = '')
     {
-        if ($url === null) {
-            $url = 'https://api.github.com/';
-        }
-        $this->client = new Client(['base_uri' => $url]);
-        if ($token) {
+        $this->client = new Client(['base_uri' => 'https://api.github.com']);
+        if (!empty($token)) {
             $this->token = $token;
         }
     }
 
-
     /**
+     * Send GET HTTP request to GitHub API.
      *
-     *
-     * @param string $path
-     * @return array
+     * @param string $url GitHub URL or path
+     * @return array GitHub response object decoded
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function get(string $path) : array
+    public function get(string $url): array
     {
         $options = [];
-        if ($this->token) {
+        if (!empty($this->token)) {
             $options = [
                 'headers' => [
                     'Authorization' => 'token ' . $this->token
                 ]
             ];
         }
+
         try {
-            $response = $this->client->request('GET', $path, $options);
-        } catch (\GuzzleHttp\Exception\ClientException $e) {
-            print("Exception:" . $e->getTraceAsString() . "\n");
-            print("Url: $path\n");
+            $response = $this->client->request('GET', $url, $options);
+        } catch (ClientException $e) {
+            print("HTTP {$e->getCode()} thrown for \"GET $url\": {$e->getMessage()}");
             return [];
         }
-
         if ($response->getStatusCode() !== 200) {
             return [];
         }
+
         return json_decode($response->getBody(), true);
     }
 
     /**
+     * Send GET HTTP request to GitHub API with support of pagination.
+     *
      * - by default, this returns only 30 commits
      *   you can change the number of commits with per_page= (max 100)
      * - you can get further pages with page=
@@ -72,14 +73,14 @@ class GitHubApi
      * https://developer.github.com/v3/#pagination
      * https://developer.github.com/v3/guides/traversing-with-pagination/
      *
-     * @param string $path
-     * @return array
+     * @param string $url GitHub URL or path
+     * @return array GitHub response object decoded
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getAllWithPagination(string $url) : array
+    public function getAllWithPagination(string $url): array
     {
         $options = [];
-        if ($this->token) {
+        if (!empty($this->token)) {
             $options = [
                 'headers' => [
                     'Authorization' => 'token ' . $this->token
@@ -89,43 +90,38 @@ class GitHubApi
         $url .= '&per_page=100';
 
         $results = [];
-        $newUrl = $url;
-        while ($newUrl) {
-
+        $nextPageUrl = $url;
+        while (!empty($nextPageUrl)) {
             try {
-                $response = $this->client->request('GET', $newUrl, $options);
-            } catch (\GuzzleHttp\Exception\ClientException $e) {
-                print("Exception:" . $e->getTraceAsString() . "\n");
-                print("Url: $url\n");
+                $response = $this->client->request('GET', $nextPageUrl, $options);
+            } catch (ClientException $e) {
+                print("HTTP {$e->getCode()} thrown for \"GET $nextPageUrl\": {$e->getMessage()}");
                 return [];
             }
             if ($response->getStatusCode() !== 200) {
                 return [];
             }
-            $responseHeaders = $response->getHeaders();
-            if ($responseHeaders['Link'] ?? false) {
-                $linkHeader = $responseHeaders['Link'];
-                $newUrl = $this->getNextPage($linkHeader);
-            } else {
-                $newUrl = '';
-            }
             $results = array_merge($results, json_decode($response->getBody(), true));
+            $nextPageUrl = $this->getNextPageUrl($response->getHeaders());
         }
+
         return $results;
     }
 
-    protected function getNextPage(array $linkHeader) :string
+    /**
+     * Parse next page URL from GitHub API response.
+     *
+     * @param array $responseHeaders Headers of GitHub API response
+     * @return string Next page URL
+     */
+    protected function getNextPageUrl(array $responseHeaders): string
     {
-        if (!($linkHeader[0] ?? false)) {
+        if (!isset($responseHeaders['Link'][0])) {
             return '';
         }
+
         $matches = [];
-        preg_match('/<(https:\/\/api.github.com[^>]*)>; rel="next"/', $linkHeader[0], $matches);
-        if (!($matches[1] ?? false)) {
-            return '';
-        }
-        return $matches[1];
+        preg_match('/<(https:\/\/api.github.com[^>]*)>; rel="next"/', $responseHeaders['Link'][0], $matches);
+        return $matches[1] ?? '';
     }
-
-
 }

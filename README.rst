@@ -157,6 +157,24 @@ Usage: bash scripts
 
 The bash scripts are located in subfolder bashScripts/.
 
+collect-stats.sh
+----------------
+
+Collect statistics on all branches of all local repositories. Currently supported is the display of the number of
+automatically generated screenshots::
+
+    ./bashScripts/collect-stats.sh [<type>] [<user>]
+
+    Arguments:
+       type: Collect the statistics of all repositories or only of those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
+       user: Collect the statistics in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
+
+Example::
+
+    ./bashScripts/collect-stats.sh all typo3
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
+
 get-repos.sh
 ------------
 

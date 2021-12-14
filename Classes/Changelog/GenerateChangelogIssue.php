@@ -66,7 +66,7 @@ class GenerateChangelogIssue
 
     public function __construct()
     {
-        $this->api = new GitHubApi('https://api.github.com/');
+        $this->api = new GitHubApi();
     }
 
     public function getBaseUrl(string $url): string

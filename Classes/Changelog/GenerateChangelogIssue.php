@@ -161,7 +161,7 @@ class GenerateChangelogIssue
 
             foreach ($filter as $domElement) {
 
-                $title = $domElement->nodeValue;
+                $title = $this->escapeTitleFromChangelog($domElement->nodeValue);
 
                 $url = $domElement->getAttribute('href');
                 $url = $baseUrl . '/' . $url;
@@ -180,6 +180,10 @@ class GenerateChangelogIssue
         }
         return $this->changes;
 
+    }
+
+    private function escapeTitleFromChangelog($title) {
+        return str_replace(['[', ']'], '_', $title);
     }
 
     public function getChangelog(string $url): array

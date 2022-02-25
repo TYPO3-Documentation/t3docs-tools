@@ -66,7 +66,7 @@ for user in $users; do
         fi
         latestbranch=""
         cd "$userdir/$repo"
-        for branch in master main 11.5 10.4 9.5 8.7 7.6; do
+        for branch in master main 11.5 11.x 10.4 10.x 9.5 9.x 8.7 8.x 7.6 7.x; do
             # Checkout and update current branch
             exists=$(git branch -a --list "$branch" --list "origin/$branch")
             if [ -n "$exists" ]; then

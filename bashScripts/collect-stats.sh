@@ -16,7 +16,7 @@ function usage()
     echo ""
     echo "Arguments:"
     echo "   type: Collect the statistics of all repositories or only of those starting with \"TYPO3CMS-\" (all, docs). [default: \"docs\"]"
-    echo "   user: Collect the statistics in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: \"typo3-documentation\"]"
+    echo "   user: Collect the statistics in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: \"typo3-documentation\"]"
     exit 1
 }
 
@@ -33,8 +33,8 @@ fi
 type="${1:-docs}"
 user="${2:-typo3-documentation}"
 if [ "$user" = "all" ]; then
-    users="typo3-documentation typo3"
-elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ]; then
+    users="typo3-documentation typo3 friendsoftypo3"
+elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ] || [ "$user" = "friendsoftypo3" ]; then
     users="$user"
 else
     usage

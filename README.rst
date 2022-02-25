@@ -25,9 +25,10 @@ Configuration
 There are several repositories in
 
 * https://github.com/TYPO3-Documentation and
-* https://github.com/TYPO3
+* https://github.com/TYPO3 and
+* https://github.com/FriendsOfTYPO3
 
-which are the home of the TYPO3 Documentation Team and the TYPO3 Core Team respectively.
+which are the home of the TYPO3 Documentation Team, the TYPO3 Core Team and the Friends of TYPO3 respectively.
 
 The names of the documentation manual repositories usually start with "TYPO3CMS-".
 These can be processed specifically.
@@ -39,12 +40,13 @@ The bashScripts/config.sh file configures the local folder of the cloned reposit
 which is generated-data/repos/ by default. The settings can be overridden with a custom
 bashScripts/config.local.sh file.
 
-The local repositories of each GitHub user namespace (currently "typo3-documentation" and "typo3")
+The local repositories of each GitHub user namespace (currently "typo3-documentation", "typo3" and "friendsoftypo3")
 are cloned into local subfolders following the pattern generated-data/repos/<user>,
 i.e. currently into
 
 * generated-data/repos/typo3-documentation/ and
-* generated-data/repos/typo3/,
+* generated-data/repos/typo3/ and
+* generated-data/repos/friendsoftypo3/,
 
 – for separate and general processing.
 
@@ -62,7 +64,7 @@ List the remote repos::
 
     Arguments:
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
@@ -78,7 +80,7 @@ List the branches of the remote repos::
 
     Arguments:
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
@@ -96,7 +98,7 @@ List the contributors of the remote repos or a specific repo::
        year: Consider commits of this year, "0" means the current year. [default: "0"]
        month: Consider commits of this month, "0" means all months. [default: "0"]
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
        repo: Consider commits of this specific repository, "" means of all repositories. [default: ""]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
@@ -167,7 +169,7 @@ automatically generated screenshots::
 
     Arguments:
        type: Collect the statistics of all repositories or only of those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Collect the statistics in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
+       user: Collect the statistics in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
 
 Example::
 
@@ -185,7 +187,7 @@ from remote to local folder generated-data/repos/::
 
     Arguments:
        type: Fetch all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "all"]
-       user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
@@ -202,7 +204,7 @@ starting with \"TYPO3CMS-\" and stops on first hit::
 
     Arguments:
        argument: Search for this string in the Documentation/Settings.cfg files of the local repositories.
-       user: Search in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
+       user: Search in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
 
 Example::
 
@@ -219,7 +221,7 @@ Execute a custom search command in all branches of all local repositories::
 
     Arguments:
        command: Execute this search command in all branches of all local repositories.
-       user: Execute the search command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
+       user: Execute the search command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
 
 Example::
 
@@ -236,7 +238,7 @@ Lists all local repositories for which a specific version branch exists::
 
     Arguments:
        version: List all local repositories having a branch matching this version.
-       user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
+       user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
 
 Example::
 
@@ -253,7 +255,7 @@ Lists all local repositories for which a specific version branch does not exist:
 
     Arguments:
        version: List all local repositories not having a branch matching this version.
-       user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: "typo3-documentation"]
+       user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
 
 Example::
 

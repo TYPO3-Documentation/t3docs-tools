@@ -16,7 +16,7 @@ function usage()
     echo ""
     echo "Arguments:"
     echo "   version: List all local repositories having a branch matching this version."
-    echo "   user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: \"typo3-documentation\"]"
+    echo "   user: List local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: \"typo3-documentation\"]"
     exit 1
 }
 
@@ -33,8 +33,8 @@ fi
 version=$1
 user="${2:-typo3-documentation}"
 if [ "$user" = "all" ]; then
-    users="typo3-documentation typo3"
-elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ]; then
+    users="typo3-documentation typo3 friendsoftypo3"
+elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ] || [ "$user" = "friendsoftypo3" ]; then
     users="$user"
 else
     usage

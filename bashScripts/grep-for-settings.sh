@@ -16,7 +16,7 @@ function usage()
     echo ""
     echo "Arguments:"
     echo "   argument: Search for this string in the Documentation/Settings.cfg files of the local repositories."
-    echo "   user: Search in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3). [default: \"typo3-documentation\"]"
+    echo "   user: Search in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: \"typo3-documentation\"]"
     exit 1
 }
 
@@ -38,8 +38,8 @@ fi
 argument="$1"
 user="${2:-typo3-documentation}"
 if [ "$user" = "all" ]; then
-    users="typo3-documentation typo3"
-elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ]; then
+    users="typo3-documentation typo3 friendsoftypo3"
+elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ] || [ "$user" = "friendsoftypo3" ]; then
     users="$user"
 else
     usage
@@ -66,7 +66,7 @@ for user in $users; do
         fi
         latestbranch=""
         cd "$userdir/$repo"
-        for branch in master main 11.5 10.4 9.5 8.7 7.6; do
+        for branch in master main 11.5 11.x 10.4 10.x 9.5 9.x 8.7 8.x 7.6 7.x; do
             # Checkout and update current branch
             exists=$(git branch -a --list "$branch" --list "origin/$branch")
             if [ -n "$exists" ]; then

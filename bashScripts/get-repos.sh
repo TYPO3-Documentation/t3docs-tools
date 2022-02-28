@@ -16,7 +16,7 @@ function usage()
     echo ""
     echo "Arguments:"
     echo "   type: Fetch all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"all\"]"
-    echo "   user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3), which has to be defined in the /config.yml. [default: \"typo3-documentation\"]"
+    echo "   user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: \"typo3-documentation\"]"
     echo "   token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: \"\"]"
     exit 1
 }
@@ -38,8 +38,8 @@ if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
     usage
 fi
 if [ "$user" = "all" ]; then
-    users="typo3-documentation typo3"
-elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ]; then
+    users="typo3-documentation typo3 friendsoftypo3"
+elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ] || [ "$user" = "friendsoftypo3" ]; then
     users="$user"
 else
     usage

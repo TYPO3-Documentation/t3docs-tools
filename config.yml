@@ -17,3 +17,6 @@ github:
     typo3:
       ignore:
 #        - .github
+    friendsoftypo3:
+      ignore:
+#        - github

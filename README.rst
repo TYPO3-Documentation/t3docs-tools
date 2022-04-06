@@ -1,8 +1,8 @@
 .. highlight:: shell
 
-===========
-t3doc-tools
-===========
+============
+t3docs-tools
+============
 
 Suite of tools, mostly for bulk changes in the repositories of the TYPO3 Documentation
 Team and the TYPO3 Core Team, and to output some statistics, where
@@ -174,6 +174,31 @@ automatically generated screenshots::
 Example::
 
     ./bash/collect-stats.sh all typo3
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
+
+exec-repos.sh
+-------------
+
+Execute a custom command in all branches of all local repositories::
+
+    ./bash/exec-repos.sh <command> [<user>]
+
+    Arguments:
+       command: Execute this command in all branches of all local repositories. This parameter can also be the absolute file path of a bash script.
+       user: Execute the search command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
+
+Example - Command as string::
+
+    ./bash/exec-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ." all
+
+Example - Command in file::
+
+    ./bash/exec-repos.sh "$(pwd)/command/my-command.sh" all
+
+The command file should be placed in the `command/` folder, where backups of meaningful production runs with file
+extension `.sh.tmpl` will be provided as templates and all custom command files with `.sh` are ignored by version
+control.
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 

@@ -65,11 +65,11 @@ for user in $users; do
             echo "$repo already exists: Update remote tracking branches, checkout and update main branch."
             cd "$repo"
             # Update remote tracking branches
-            git fetch || exitMsg "fetch $repo"
+            git fetch --prune || exitMsg "fetch $repo"
             # Checkout and update main branch
             mainbranch=""
-            for branch in master main; do
-                exists=$(git branch -a --list "$branch" --list "origin/$branch")
+            for branch in main master latest; do
+                exists=$(git branch -a --list "origin/$branch")
                 if [ -n "$exists" ]; then
                     mainbranch="$branch"
                     break

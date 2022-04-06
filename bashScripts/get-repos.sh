@@ -68,7 +68,7 @@ for user in $users; do
             git fetch || exitMsg "fetch $repo"
             # Checkout and update main branch
             mainbranch=""
-            for branch in master main; do
+            for branch in main master latest; do
                 exists=$(git branch -a --list "$branch" --list "origin/$branch")
                 if [ -n "$exists" ]; then
                     mainbranch="$branch"

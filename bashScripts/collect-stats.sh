@@ -66,7 +66,7 @@ for user in $users; do
         cd "$userdir/$repo"
         for branch in main master latest 11.5 11.x 11 10.4 10.x 10 9.5 9.x 9 8.7 8.x 8 7.6 7.x 7; do
             # Checkout and update current branch
-            exists=$(git branch -a --list "$branch" --list "origin/$branch")
+            exists=$(git branch -a --list "origin/$branch")
             if [ -n "$exists" ]; then
                 git checkout $branch || exitMsg "checkout $branch in $repo"
                 git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"

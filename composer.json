@@ -18,7 +18,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "T3docs\\T3docsTools\\": "Classes"
+      "T3docs\\T3docsTools\\": "src"
     }
   },
   "require": {

@@ -242,19 +242,7 @@ The repositories must already exist in generated-data/repos/. Call get-repos.sh 
 search-repos.sh
 ---------------
 
-Execute a custom search command in all branches of all local repositories::
-
-    ./bash/search-repos.sh <command> [<user>]
-
-    Arguments:
-       command: Execute this search command in all branches of all local repositories.
-       user: Execute the search command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: "typo3-documentation"]
-
-Example::
-
-    ./bash/search-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ." all
-
-The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
+This command has been replaced with exec-repos.sh.
 
 versionbranch-exist.sh
 ----------------------

@@ -88,7 +88,7 @@ for user in $users; do
                     if [ -n "$latestbranch" ]; then
                         git checkout -f $latestbranch
                     fi
-                    exit 0
+                    break 3
                 fi
             else
                 echo "$repo ($branch): Miss."

@@ -76,7 +76,7 @@ for user in $users; do
                 fi
             done
             if [ -n "$mainbranch" ]; then
-                git checkout $mainbranch || exitMsg "checkout $mainbranch in $repo"
+                git checkout -f $mainbranch || exitMsg "checkout $mainbranch in $repo"
                 git reset --hard origin/$mainbranch || exitMsg "reset --hard origin/$mainbranch in $repo"
             else
                 echo "The $repo repo is not yet initialized because it lacks a main branch."

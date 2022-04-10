@@ -72,7 +72,7 @@ for user in $users; do
             # Checkout and update current branch
             exists=$(git branch -a --list "origin/$branch")
             if [ -n "$exists" ]; then
-                git checkout $branch || exitMsg "checkout $branch in $repo"
+                git checkout -f $branch || exitMsg "checkout $branch in $repo"
                 git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
             else
                 continue
@@ -90,14 +90,14 @@ for user in $users; do
                 if [ $stopOnFirstHit -eq 1 ]; then
                     echo "Stopping on first hit."
                     if [ -n "$latestbranch" ]; then
-                        git checkout $latestbranch
+                        git checkout -f $latestbranch
                     fi
                     exit 0
                 fi
             fi
         done
         if [ -n "$latestbranch" ]; then
-            git checkout $latestbranch
+            git checkout -f $latestbranch
         fi
     done
 done

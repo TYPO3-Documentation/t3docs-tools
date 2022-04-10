@@ -1,0 +1,56 @@
+#!/bin/bash
+
+# This command file has been used to
+#
+# (1) replace all occurrences of :ref:`<manual>:start` with :doc:`<manual>:Index`,
+# (2) replace all occurrences of :ref:`label <<manual>:start>` with :doc:`label <<manual>:Index>`,
+# (3) commit the changes in branch "task-update-docs-reference-<original-branch>" with a given message and
+# (4) push them to GitHub for the final manual review and pull request
+#
+# in all release branches of all repositories of the GitHub user spaces "typo3-documentation".
+
+# Dry run
+# - 0: No dry run - push changes to remote repositories and display next steps for local documentation rendering and pull request URL.
+# - 1: Dry run - display affected repositories.
+# - 2: Dry run - display changes in files.
+DRY_RUN=2
+BRANCH_NAME="task-update-docs-reference"
+COMMIT_MESSAGE="[DOCS] Reference manual's start page with :doc:\`<manual>:Index\`
+
+Adding the custom label \`start\` to the beginning of the manual's
+Index.rst is redundant. Use :doc:\`<manual>:Index\` instead of
+:ref:\`<manual:start>\` to refer to it."
+
+grep -rnlE ':ref:`([^<`]*)<([^:]*):start>`' --exclude-dir='.git' --exclude-dir='Documentation-GENERATED-temp' . | \
+xargs sed -i 's/:ref:`\([^<`]*\)<\([^:]*\):start>`/:doc:`\1<\2:Index>`/g'
+
+grep -rnlE ':ref:`([^:]*):start`' --exclude-dir='.git' --exclude-dir='Documentation-GENERATED-temp' . | \
+xargs sed -i 's/:ref:`\([^:]*\):start`/:doc:`\1:Index`/g'
+
+diff=$(git diff)
+branch=$(git rev-parse --abbrev-ref HEAD)
+if git config remote.fork.url > /dev/null; then
+    remote="fork"
+else
+    remote="origin"
+fi
+github_url=$(git remote -v | awk "/^$remote.*(push)/{print \$2}" | sed -Ee 's#(git@|git://)#https://#' -e 's@com:@com/@' -e 's%\.git$%%' | awk '/github/');
+
+if [ -n "$diff" ]; then
+    git checkout -B "$BRANCH_NAME-$branch" HEAD > /dev/null
+    git add -u > /dev/null
+    git commit -m "$COMMIT_MESSAGE" > /dev/null
+    if [ $DRY_RUN -eq 1 ]; then
+        echo "$github_url/$BRANCH_NAME-$branch"
+    elif [ $DRY_RUN -eq 2 ]; then
+        git show
+    else
+        if git push --force -u $remote "$BRANCH_NAME-$branch" > /dev/null; then
+            echo "cd $(pwd) && git checkout $BRANCH_NAME-$branch"
+            echo "$github_url/pull/new/$BRANCH_NAME-$branch"
+        else
+            echo "[ERROR] Push of $BRANCH_NAME-$branch to $github_url failed."
+        fi
+    fi
+    git checkout -  > /dev/null
+fi

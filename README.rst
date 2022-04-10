@@ -194,7 +194,9 @@ Example - Command as string::
 
 Example - Command in file::
 
-    ./bash/exec-repos.sh "$(pwd)/command/my-command.sh" all
+    cp command/replace-and-push.sh.tmpl command/my-command.sh
+    # adapt command/my-command.sh to your use case
+    ./bash/exec-repos.sh "$(pwd)/command/my-command.sh" typo3-documentation
 
 The command file should be placed in the `command/` folder, where backups of meaningful production runs with file
 extension `.sh.tmpl` will be provided as templates and all custom command files with `.sh` are ignored by version

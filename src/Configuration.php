@@ -37,6 +37,11 @@ class Configuration
         return self::$instance;
     }
 
+    public function getIncludedRepos(string $user): array
+    {
+        return $this->config['github']['repos'][$user]['include'] ?? [];
+    }
+
     public function getIgnoredRepos(string $user): array
     {
         return $this->config['github']['repos'][$user]['ignore'] ?? [];

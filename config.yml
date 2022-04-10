@@ -8,14 +8,13 @@ github:
   cmd:
     baseURl:  https://api.github.com/
   repos:
+    friendsoftypo3:
+    typo3:
     typo3-documentation:
       ignore:
         - TYPO3CMS-Reference-FileAbstractionLayer
         - TYPO3CMS-Tutorial-CreatingExtensions
         - TYPO3CMS-Guide-Extbase
-    typo3:
-      ignore:
-#        - .github
-    friendsoftypo3:
-      ignore:
-#        - github
+    # typo3-console:
+      # include:
+        # - typo3-console

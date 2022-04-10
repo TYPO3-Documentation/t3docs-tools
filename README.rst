@@ -36,9 +36,9 @@ These can be processed specifically.
 The config.yml file is used to filter out some repositories that are not yet
 archived but should not be maintained any longer.
 
-The bashScripts/config.sh file configures the local folder of the cloned repositories,
+The bash/config.sh file configures the local folder of the cloned repositories,
 which is generated-data/repos/ by default. The settings can be overridden with a custom
-bashScripts/config.local.sh file.
+bash/config.local.sh file.
 
 The local repositories of each GitHub user namespace (currently "typo3-documentation", "typo3" and "friendsoftypo3")
 are cloned into local subfolders following the pattern generated-data/repos/<user>,
@@ -157,7 +157,7 @@ Example::
 Usage: bash scripts
 ===================
 
-The bash scripts are located in subfolder bashScripts/.
+The bash scripts are located in subfolder bash/.
 
 collect-stats.sh
 ----------------
@@ -165,7 +165,7 @@ collect-stats.sh
 Collect statistics on all branches of all local repositories. Currently supported is the display of the number of
 automatically generated screenshots::
 
-    ./bashScripts/collect-stats.sh [<type>] [<user>]
+    ./bash/collect-stats.sh [<type>] [<user>]
 
     Arguments:
        type: Collect the statistics of all repositories or only of those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
@@ -173,7 +173,7 @@ automatically generated screenshots::
 
 Example::
 
-    ./bashScripts/collect-stats.sh all typo3
+    ./bash/collect-stats.sh all typo3
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -183,7 +183,7 @@ get-repos.sh
 Clones all TYPO3 documentation repositories (all) or only those starting with \"TYPO3CMS-\" (docs)
 from remote to local folder generated-data/repos/::
 
-    ./bashScripts/get-repos.sh [<type>] [<user>] [<token>]
+    ./bash/get-repos.sh [<type>] [<user>] [<token>]
 
     Arguments:
        type: Fetch all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "all"]
@@ -192,7 +192,7 @@ from remote to local folder generated-data/repos/::
 
 Example::
 
-    ./bashScripts/get-repos.sh docs typo3-documentation
+    ./bash/get-repos.sh docs typo3-documentation
 
 grep-for-settings.sh
 --------------------
@@ -200,7 +200,7 @@ grep-for-settings.sh
 This searches for a string in Documentation/Settings.cfg in all branches of those local repositories
 starting with \"TYPO3CMS-\" and stops on first hit::
 
-    ./bashScripts/grep-for-settings.sh <argument> [<user>]
+    ./bash/grep-for-settings.sh <argument> [<user>]
 
     Arguments:
        argument: Search for this string in the Documentation/Settings.cfg files of the local repositories.
@@ -208,7 +208,7 @@ starting with \"TYPO3CMS-\" and stops on first hit::
 
 Example::
 
-    ./bashScripts/grep-for-settings.sh t3tssyntax typo3-documentation
+    ./bash/grep-for-settings.sh t3tssyntax typo3-documentation
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -217,7 +217,7 @@ search-repos.sh
 
 Execute a custom search command in all branches of all local repositories::
 
-    ./bashScripts/search-repos.sh <command> [<user>]
+    ./bash/search-repos.sh <command> [<user>]
 
     Arguments:
        command: Execute this search command in all branches of all local repositories.
@@ -225,7 +225,7 @@ Execute a custom search command in all branches of all local repositories::
 
 Example::
 
-    ./bashScripts/search-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ." all
+    ./bash/search-repos.sh "grep -rnIE '\`https://typo3\.org' --exclude-dir='.git' ." all
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -234,7 +234,7 @@ versionbranch-exist.sh
 
 Lists all local repositories for which a specific version branch exists::
 
-    ./bashScripts/versionbranch-exist.sh <version> [<user>]
+    ./bash/versionbranch-exist.sh <version> [<user>]
 
     Arguments:
        version: List all local repositories having a branch matching this version.
@@ -242,7 +242,7 @@ Lists all local repositories for which a specific version branch exists::
 
 Example::
 
-    ./bashScripts/versionbranch-exist.sh "7.6" typo3
+    ./bash/versionbranch-exist.sh "7.6" typo3
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
@@ -251,7 +251,7 @@ versionbranch-not-exist.sh
 
 Lists all local repositories for which a specific version branch does not exist::
 
-    ./bashScripts/versionbranch-not-exist.sh <version> [<user>]
+    ./bash/versionbranch-not-exist.sh <version> [<user>]
 
     Arguments:
        version: List all local repositories not having a branch matching this version.
@@ -259,6 +259,6 @@ Lists all local repositories for which a specific version branch does not exist:
 
 Example::
 
-    ./bashScripts/versionbranch-not-exist.sh "11.5" typo3-documentation
+    ./bash/versionbranch-not-exist.sh "11.5" typo3-documentation
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.

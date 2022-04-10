@@ -34,7 +34,8 @@ The names of the documentation manual repositories usually start with "TYPO3CMS-
 These can be processed specifically.
 
 The config.yml file is used to filter out some repositories that are not yet
-archived but should not be maintained any longer.
+archived but should not be maintained any longer. The configuration can be overridden
+with a custom config.local.yml file.
 
 The bash/config.sh file configures the local folder of the cloned repositories,
 which is generated-data/repos/ by default. The settings can be overridden with a custom
@@ -64,7 +65,7 @@ List the remote repos::
 
     Arguments:
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml or /config.local.yml. [default: "typo3-documentation"]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
@@ -80,7 +81,7 @@ List the branches of the remote repos::
 
     Arguments:
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml or /config.local.yml. [default: "typo3-documentation"]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
@@ -98,7 +99,7 @@ List the contributors of the remote repos or a specific repo::
        year: Consider commits of this year, "0" means the current year. [default: "0"]
        month: Consider commits of this month, "0" means all months. [default: "0"]
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
-       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml or /config.local.yml. [default: "typo3-documentation"]
        repo: Consider commits of this specific repository, "" means of all repositories. [default: ""]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
@@ -214,7 +215,7 @@ from remote to local folder generated-data/repos/::
 
     Arguments:
        type: Fetch all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "all"]
-       user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: "typo3-documentation"]
+       user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml or /config.local.yml. [default: "typo3-documentation"]
        token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::

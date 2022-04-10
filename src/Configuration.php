@@ -12,14 +12,21 @@ class Configuration
     /** @var array */
     protected $config;
 
-    public function __construct(string $configFile = null)
+    public function __construct()
     {
-        if (!$configFile) {
-            list($scriptName) = get_included_files();
-            $dirName = dirname($scriptName);
-            $configFile = $dirName . '/config.yml';
+        list($scriptName) = get_included_files();
+        $dirName = dirname($scriptName);
+
+        if (is_file($dirName . '/config.local.yml')) {
+            $config = array_merge_recursive(
+                Yaml::parseFile($dirName . '/config.yml'),
+                Yaml::parseFile($dirName . '/config.local.yml')
+            );
+        } else {
+            $config = Yaml::parseFile($dirName . '/config.yml');
         }
-        $this->config = Yaml::parseFile($configFile);
+
+        $this->config = $config;
     }
 
     public static function getInstance()
@@ -34,5 +41,4 @@ class Configuration
     {
         return $this->config['github']['repos'][$user]['ignore'] ?? [];
     }
-
 }

@@ -1,5 +1,4 @@
 # this is general static configuration (in Git repo)
-# - todo: you can override this configuration by adding a config.local.yml
 # - config.local.yml (if it exists) will override config.yml
 
 general:

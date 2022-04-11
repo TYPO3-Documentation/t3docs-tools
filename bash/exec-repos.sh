@@ -15,8 +15,8 @@ function usage()
     echo "Usage: $0 <command> [<user>]"
     echo ""
     echo "Arguments:"
-    echo "   command: Execute this search command in all branches of all local repositories."
-    echo "   user: Execute the search command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: \"typo3-documentation\"]"
+    echo "   command: Execute this command in all branches of all local repositories. This parameter can also be the absolute file path of a bash script, e.g. \"\$(pwd)/command/my-command.sh\"."
+    echo "   user: Execute the command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: \"typo3-documentation\"]"
     exit 1
 }
 
@@ -42,8 +42,13 @@ fi
 
 quiet=0
 stopOnFirstHit=0
+if [ ! -f "$cmd" ]; then
+    isCmdFile=0
+else
+    isCmdFile=1
+fi
 
-declare -A searchResults
+declare -A execResults
 
 for user in $users; do
     userdir="$repodir/$user"
@@ -53,7 +58,7 @@ for user in $users; do
     fi
 
     echo "------------------------------------------------------------------------"
-    echo "Run search command "
+    echo "Run command "
     echo "-"
     echo "$cmd"
     echo "-"
@@ -72,7 +77,7 @@ for user in $users; do
             # Checkout and update current branch
             exists=$(git branch -a --list "origin/$branch")
             if [ -n "$exists" ]; then
-                git checkout $branch || exitMsg "checkout $branch in $repo"
+                git checkout -f $branch || exitMsg "checkout $branch in $repo"
                 git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
             else
                 continue
@@ -81,53 +86,57 @@ for user in $users; do
                 latestbranch="$branch"
             fi
 
-            # Collect search results
-            results=$(eval "$cmd")
+            # Collect results
+            if [ $isCmdFile -eq 0 ]; then
+                results=$(eval "$cmd")
+            else
+                results=$(bash "$cmd")
+            fi
             numResults=$(echo "$results" | wc -l)
             if [ -n "$results" ] ; then
-                searchResults["$user/$repo/$branch|results"]=$results
-                searchResults["$user/$repo/$branch|numResults"]=$numResults
+                execResults["$user/$repo/$branch|results"]=$results
+                execResults["$user/$repo/$branch|numResults"]=$numResults
                 if [ $stopOnFirstHit -eq 1 ]; then
                     echo "Stopping on first hit."
                     if [ -n "$latestbranch" ]; then
-                        git checkout $latestbranch
+                        git checkout -f $latestbranch
                     fi
-                    exit 0
+                    break 3
                 fi
             fi
         done
         if [ -n "$latestbranch" ]; then
-            git checkout $latestbranch
+            git checkout -f $latestbranch
         fi
     done
 done
 
 totalResults=0
-# Sort search results by repository name
-mapfile -d '' sorted < <(printf '%s\0' "${!searchResults[@]}" | sort -z)
-# Print search results
+# Sort results by repository name
+mapfile -d '' sorted < <(printf '%s\0' "${!execResults[@]}" | sort -z)
+# Print results
 for x in "${sorted[@]}"; do
     if [[ $x =~ \|results$ ]]; then
         searchPath=${x%|*}
-        results=${searchResults["$searchPath|results"]}
-        numResults=${searchResults["$searchPath|numResults"]}
+        results=${execResults["$searchPath|results"]}
+        numResults=${execResults["$searchPath|numResults"]}
         totalResults=$((totalResults+numResults))
         if [ $quiet -ne 1 ] ; then
             echo "------------------------------------------------------------------------"
-            printf "%s: %s search result(s)\n" "$searchPath" "$numResults"
+            printf "%s: %s result(s)\n" "$searchPath" "$numResults"
             echo "------------------------------------------------------------------------"
             echo "$results"
         else
-            printf "%s: %s search result(s)\n" "$searchPath" "$numResults"
+            printf "%s: %s result(s)\n" "$searchPath" "$numResults"
         fi
     fi
 done
 if [ $totalResults -gt 0 ] ; then
     echo "------------------------------------------------------------------------"
-    printf "Total: %s search result(s)\n" "$totalResults"
+    printf "Total: %s result(s)\n" "$totalResults"
     echo "------------------------------------------------------------------------"
 else
     echo "------------------------------------------------------------------------"
-    echo "No search results"
+    echo "No results"
     echo "------------------------------------------------------------------------"
 fi

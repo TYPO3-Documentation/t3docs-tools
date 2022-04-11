@@ -71,7 +71,7 @@ for user in $users; do
             exists=$(git branch -a --list "origin/$branch")
             if [ -n "$exists" ]; then
                 echo "$repo ($branch): Searching .."
-                git checkout $branch || exitMsg "checkout $branch in $repo"
+                git checkout -f $branch || exitMsg "checkout $branch in $repo"
                 git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
             else
                 continue
@@ -86,16 +86,16 @@ for user in $users; do
                 if [ $stopOnFirstHit -eq 1 ]; then
                     echo "Stopping on first hit."
                     if [ -n "$latestbranch" ]; then
-                        git checkout $latestbranch
+                        git checkout -f $latestbranch
                     fi
-                    exit 0
+                    break 3
                 fi
             else
                 echo "$repo ($branch): Miss."
             fi
         done
         if [ -n "$latestbranch" ]; then
-            git checkout $latestbranch
+            git checkout -f $latestbranch
         fi
         echo "------------------------------------------------------------------------"
     done

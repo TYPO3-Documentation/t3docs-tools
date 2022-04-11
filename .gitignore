@@ -1,5 +1,6 @@
 .idea/
 generated-data
+/command/*.sh
 vendor
 composer.lock
 manuals.json

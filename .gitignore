@@ -8,5 +8,6 @@ Todo.txt
 contributors*.csv
 config-generated.yml
 config.local.sh
+config.local.yml
 
 *.log

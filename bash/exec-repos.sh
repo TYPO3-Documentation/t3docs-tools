@@ -7,22 +7,16 @@ thisdir=$(dirname $0)
 cd $thisdir
 thisdir=$(pwd)
 
-# config
 source $thisdir/config.sh
+source $thisdir/helpers.sh
 
 function usage()
 {
     echo "Usage: $0 <command> [<user>]"
     echo ""
     echo "Arguments:"
-    echo "   command: Execute this command in all branches of all local repositories. This parameter can also be the absolute file path of a bash script, e.g. \"\$(pwd)/command/my-command.sh\"."
-    echo "   user: Execute the command in the local repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3). [default: \"typo3-documentation\"]"
-    exit 1
-}
-
-function exitMsg()
-{
-    echo "ERROR: $*"
+    echo "   command: Execute this command in all branches of all local repositories. This parameter can also be the absolute file path of a bash script."
+    echo "   user: Execute the command in the local repositories of this GitHub user namespace (all, $(getUsers 'all' ', ')). Multiple users must be separated by space, e.g. \"friendsoftypo3 typo3\". [default: \"typo3-documentation\"]"
     exit 1
 }
 
@@ -32,11 +26,9 @@ fi
 
 cmd="$1"
 user="${2:-typo3-documentation}"
-if [ "$user" = "all" ]; then
-    users="typo3-documentation typo3 friendsoftypo3"
-elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ] || [ "$user" = "friendsoftypo3" ]; then
-    users="$user"
-else
+
+users=$(getUsers "$user" " ")
+if [ -z "$users" ]; then
     usage
 fi
 

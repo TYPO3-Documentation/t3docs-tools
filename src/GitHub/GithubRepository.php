@@ -58,7 +58,7 @@ class GithubRepository
     }
 
     /**
-     * Filter out unwanted repos, e.g. ignored, archived, etc.
+     * Filter out unwanted repos, e.g. ignored, archived, not-included, etc.
      *
      * @param string $user GitHub user namespace
      * @param string $type GitHub repository type, docs="TYPO3CMS-*", all="*"
@@ -72,6 +72,8 @@ class GithubRepository
                 || $type === 'docs' && strpos($repo['name'], 'TYPO3CMS-') !== 0
                 || $repo['archived']
                 || in_array($repo['name'], $this->config->getIgnoredRepos($user))
+                || !empty($this->config->getIncludedRepos($user))
+                    && !in_array($repo['name'], $this->config->getIncludedRepos($user))
             ){
                 continue;
             }

@@ -7,8 +7,8 @@ thisdir=$(dirname $0)
 cd $thisdir
 thisdir=$(pwd)
 
-# config
 source $thisdir/config.sh
+source $thisdir/helpers.sh
 
 function usage()
 {
@@ -16,14 +16,8 @@ function usage()
     echo ""
     echo "Arguments:"
     echo "   type: Fetch all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"all\"]"
-    echo "   user: Fetch the repositories of this GitHub user namespace (all, typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: \"typo3-documentation\"]"
+    echo "   user: Fetch the repositories of this GitHub user namespace (all, $(getUsers 'all' ', ')), which has to be defined in the /config.yml or /config.local.yml. Multiple users must be separated by space, e.g. \"friendsoftypo3 typo3\". [default: \"typo3-documentation\"]"
     echo "   token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: \"\"]"
-    exit 1
-}
-
-function exitMsg()
-{
-    echo "ERROR: $*"
     exit 1
 }
 
@@ -34,14 +28,13 @@ fi
 type="${1:-all}"
 user="${2:-typo3-documentation}"
 token="${3:-}"
+
 if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
     usage
 fi
-if [ "$user" = "all" ]; then
-    users="typo3-documentation typo3 friendsoftypo3"
-elif [ "$user" = "typo3-documentation" ] || [ "$user" = "typo3" ] || [ "$user" = "friendsoftypo3" ]; then
-    users="$user"
-else
+
+users=$(getUsers "$user" " ")
+if [ -z "$users" ]; then
     usage
 fi
 

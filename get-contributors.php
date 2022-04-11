@@ -1,18 +1,20 @@
 <?php
 
+use T3docs\T3docsTools\Configuration;
 use T3docs\T3docsTools\GitHub\GithubRepository;
 
 $loader = require 'vendor/autoload.php';
 
 function usage()
 {
+    $users = (new Configuration())->getSortedFilteredUsers('all');
     print("Usage: php get-contributors.php [<year>] [<month>] [<type>] [<user>] [<repo>] [<token>]\n");
     print("\n");
     print("Arguments:\n");
     print("   year: Consider commits of this year, \"0\" means the current year. [default: \"0\"]\n");
     print("   month: Consider commits of this month, \"0\" means all months. [default: \"0\"]\n");
     print("   type: Consider all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"docs\"]\n");
-    print("   user: Consider the repositories of this GitHub user namespace (typo3-documentation, typo3, friendsoftypo3), which has to be defined in the /config.yml. [default: \"typo3-documentation\"]\n");
+    print("   user: Consider the repositories of this GitHub user namespace (" . implode(', ', $users) . "), which has to be defined in the /config.yml or /config.local.yml. [default: \"typo3-documentation\"]\n");
     print("   repo: Consider commits of this specific repository, \"\" means of all repositories. [default: \"\"]\n");
     print("   token: Fetch the repositories using this GitHub API token to overcome GitHub rate limitations. [default: \"\"]\n");
     exit(1);

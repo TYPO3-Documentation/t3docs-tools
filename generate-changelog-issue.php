@@ -14,7 +14,7 @@ if (!($argv[1] ?? false)) {
 $url = $argv[1];
 
 if (strpos($url, 'https:', 0) !== 0) {
-    $url = 'https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/' . $url . '/Index.html';
+    $url = 'https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/' . $url . '/Index.html';
     print("Use url: $url\n");
 }
 

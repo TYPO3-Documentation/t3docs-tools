@@ -15,8 +15,8 @@ Installation
 
 .. code-block:: bash
 
-    git clone <url to repository>
-    cd <repository folder>
+    git clone git@github.com:TYPO3-Documentation/t3docs-tools.git
+    cd t3docs-tools
     composer install
 
 Configuration
@@ -34,14 +34,14 @@ Friends of TYPO3 respectively.
 The names of the documentation manual repositories usually start with "TYPO3CMS-".
 These can be processed specifically.
 
-The config.yml file is used to filter out some repositories that are not yet
+The `config.yml` file is used to filter out some repositories that are not yet
 archived but should not be maintained any longer. The official, version controlled
 configuration can be overridden with a custom, non version controlled
-config.local.yml file.
+`config.local.yml` file.
 
-The bash/config.sh file configures the local folder of the cloned repositories,
+The `bash/config.sh` file configures the local folder of the cloned repositories,
 which is generated-data/repos/ by default. The settings can be overridden with a custom
-bash/config.local.sh file.
+`bash/config.local.sh` file.
 
 The local repositories of each GitHub user namespace (officially "friendsoftypo3",
 "typo3" and "typo3-documentation") are cloned into local subfolders following
@@ -121,15 +121,15 @@ Examples:
 
 Create the text for a changelog issue for version 10.1::
 
-    php generate-changelog-issue.php "https://docs.typo3.org/c/typo3/cms-core/master/en-us/Changelog/10.1/Index.html"
+    php generate-changelog-issue.php "https://docs.typo3.org/c/typo3/cms-core/main/en-us/Changelog/10.1/Index.html"
 
 or::
 
     php generate-changelog-issue.php "10.1"
 
-Show only the changelogs of the master branch that are not yet included in issue 121::
+Show only the changelogs of the 12.0 branch that are not yet included in issue 121::
 
-    php generate-changelog-issue.php "master" 121
+    php generate-changelog-issue.php "12.0" 121
 
 manuals-json-show-count.php
 ---------------------------
@@ -141,8 +141,7 @@ If no filename is specified, the file is fetched on-the-fly from the remote serv
 
 Example::
 
-    cd ~/Downloads
-    wget https://intercept.typo3.com/assets/docs/manuals.json
+    curl "https://intercept.typo3.com/assets/docs/manuals.json" > ~/Downloads/manuals.json
     php -f manuals-json-show-count.php ~/Downloads/manuals.json
 
 manuals-json-show-ext-info.php
@@ -155,8 +154,8 @@ If no filename is specified, the file is fetched on-the-fly from the remote serv
 
 Example::
 
-    wget -O /tmp/manuals.json https://intercept.typo3.com/assets/docs/manuals.json
-    php -f manuals-json-show-ext-info.php rtehtmlarea /tmp/manuals.json
+    curl "https://intercept.typo3.com/assets/docs/manuals.json" > ~/Downloads/manuals.json
+    php -f manuals-json-show-ext-info.php rtehtmlarea ~/Downloads/manuals.json
 
 Usage: bash scripts
 ===================

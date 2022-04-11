@@ -50,7 +50,7 @@ function versionbranchNotExists()
 
             git branch -a | grep "remotes\/origin\/$version" >/dev/null
             if [ $? -ne 0 ]; then
-                echo "$repo is missing version $version."
+                echo "$user/$repo is missing version $version."
             fi
         done
     done

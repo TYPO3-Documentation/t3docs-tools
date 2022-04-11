@@ -50,7 +50,7 @@ function versionbranchExists()
 
             git branch -a | grep "remotes\/origin\/$version" >/dev/null
             if [ $? -eq 0 ]; then
-                echo "$repo has version $version."
+                echo "$user/$repo has version $version."
             fi
         done
     done

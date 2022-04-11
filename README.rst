@@ -224,24 +224,6 @@ Example::
 
     ./bash/get-repos.sh docs typo3-documentation
 
-grep-for-settings.sh
---------------------
-
-This searches for a string in Documentation/Settings.cfg in all branches of those local repositories
-starting with \"TYPO3CMS-\" and stops on first hit::
-
-    ./bash/grep-for-settings.sh <argument> [<user>]
-
-    Arguments:
-       argument: Search for this string in the Documentation/Settings.cfg files of the local repositories.
-       user: Search in the local repositories of this GitHub user namespace (all, friendsoftypo3, typo3, typo3-documentation, ..). Multiple users must be separated by space, e.g. "friendsoftypo3 typo3". [default: "typo3-documentation"]
-
-Example::
-
-    ./bash/grep-for-settings.sh t3tssyntax typo3-documentation
-
-The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
-
 versionbranch-exist.sh
 ----------------------
 

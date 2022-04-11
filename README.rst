@@ -224,6 +224,29 @@ Example::
 
     ./bash/get-repos.sh docs typo3-documentation
 
+modify-repos.sh
+---------------
+
+Modify the local repositories by a specific action.
+
+modify-repos.sh set-fork
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Set a remote "fork" repository if a given GitHub user namespace has a repository with a matching name::
+
+    ./bash/modify-repos.sh set-fork <fork> [<user>] [<token>]
+
+    Arguments:
+       fork: Set a remote "fork" repository if this GitHub user namespace has a repository with a matching name.
+       user: Execute the action in the local repositories of this GitHub user namespace (all, friendsoftypo3, typo3, typo3-documentation, ..). Multiple users must be separated by space, e.g. "friendsoftypo3 typo3". [default: "typo3-documentation"]
+       token: Use this GitHub API token to overcome GitHub rate limitations. [default: ""]
+
+Example::
+
+    ./bash/modify-repos.sh set-fork marble
+
+The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
+
 versionbranch-exist.sh
 ----------------------
 

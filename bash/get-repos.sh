@@ -15,60 +15,70 @@ function usage()
     exit 1
 }
 
-if [ $# -gt 3 ]; then
-    usage
-fi
+function handleRequest()
+{
+    if [ $# -le 3 ]; then
+        getRepos "$@"
+    else
+        usage
+    fi
+}
 
-type="${1:-all}"
-user="${2:-typo3-documentation}"
-token="${3:-}"
+function getRepos()
+{
+    local type="${1:-all}"
+    local user="${2:-typo3-documentation}"
+    local token="${3:-}"
 
-if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
-    usage
-fi
-
-users=$(getUsers "$user" " ")
-if [ -z "$users" ]; then
-    usage
-fi
-
-for user in $users; do
-    userdir="$repodir/$user"
-
-    if ! mkdir -p "$userdir"; then
-        exitMsg "Error creating directory \"$userdir\"."
+    if [ "$type" != "all" ] && [ "$type" != "docs" ]; then
+        usage
     fi
 
-    echo "Clone or update local repositories of"
-    echo "$userdir/."
-    echo "------------------------------------------------------------------------"
+    local users=$(getUsers "$user" " ")
+    if [ -z "$users" ]; then
+        usage
+    fi
 
-    php -f $phpdir/get-repo-names.php "$type" "$user" "$token" | while read repo; do
-        cd "$userdir"
-        if [ ! -d "$repo" ]; then
-            echo "Cloning repo $repo."
-            git clone "git@github.com:$user/$repo.git" || exitMsg "clone $repo"
-        else
-            echo "$repo already exists: Update remote tracking branches, checkout and update main branch."
-            cd "$repo"
-            # Update remote tracking branches
-            git fetch --prune || exitMsg "fetch $repo"
-            # Checkout and update main branch
-            mainbranch=""
-            for branch in main master latest; do
-                exists=$(git branch -a --list "origin/$branch")
-                if [ -n "$exists" ]; then
-                    mainbranch="$branch"
-                    break
-                fi
-            done
-            if [ -n "$mainbranch" ]; then
-                git checkout -f $mainbranch || exitMsg "checkout $mainbranch in $repo"
-                git reset --hard origin/$mainbranch || exitMsg "reset --hard origin/$mainbranch in $repo"
-            else
-                echo "The $repo repo is not yet initialized because it lacks a main branch."
-            fi
+    for user in $users; do
+        userdir="$repodir/$user"
+
+        if ! mkdir -p "$userdir"; then
+            exitMsg "Error creating directory \"$userdir\"."
         fi
+
+        echo "Clone or update local repositories of"
+        echo "$userdir/."
         echo "------------------------------------------------------------------------"
+
+        php -f $phpdir/get-repo-names.php "$type" "$user" "$token" | while read repo; do
+            cd "$userdir"
+            if [ ! -d "$repo" ]; then
+                echo "Cloning repo $repo."
+                git clone "git@github.com:$user/$repo.git" || exitMsg "clone $repo"
+            else
+                echo "$repo already exists: Update remote tracking branches, checkout and update main branch."
+                cd "$repo"
+                # Update remote tracking branches
+                git fetch --prune || exitMsg "fetch $repo"
+                # Checkout and update main branch
+                mainbranch=""
+                for branch in main master latest; do
+                    exists=$(git branch -a --list "origin/$branch")
+                    if [ -n "$exists" ]; then
+                        mainbranch="$branch"
+                        break
+                    fi
+                done
+                if [ -n "$mainbranch" ]; then
+                    git checkout -f $mainbranch || exitMsg "checkout $mainbranch in $repo"
+                    git reset --hard origin/$mainbranch || exitMsg "reset --hard origin/$mainbranch in $repo"
+                else
+                    echo "The $repo repo is not yet initialized because it lacks a main branch."
+                fi
+            fi
+            echo "------------------------------------------------------------------------"
+        done
     done
-done
+}
+
+handleRequest "$@"

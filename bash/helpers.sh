@@ -26,6 +26,6 @@ function getRepoNames()
 
 function exitMsg()
 {
-    echo "ERROR: $*"
+    echo "ERROR: $@"
     exit 1
 }

@@ -25,7 +25,7 @@ function handleAction()
 
     if [ "$action" = "set-fork" ]; then
         if [ $# -le 3 ]; then
-            setFork $*
+            setFork "$@"
         else
             usage
         fi
@@ -113,4 +113,4 @@ function setFork()
     fi
 }
 
-handleAction $*
+handleAction "$@"

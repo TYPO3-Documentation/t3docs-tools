@@ -1,14 +1,8 @@
 #!/bin/bash
 
-# -------------------
-# automatic variables
-# -------------------
-thisdir=$(dirname $0)
-cd $thisdir
-thisdir=$(pwd)
-
-source $thisdir/config.sh
-source $thisdir/helpers.sh
+thisdir=$(dirname $(realpath "$0"))
+source "$thisdir/config.sh"
+source "$thisdir/helpers.sh"
 
 function usage()
 {
@@ -20,36 +14,46 @@ function usage()
     exit 1
 }
 
-if [ $# -lt 1 ] || [ $# -gt 2 ]; then
-    usage
-fi
+function handleRequest()
+{
+    if [ $# -ge 1 ] && [ $# -le 2 ]; then
+        versionbranchExists "$@"
+    else
+        usage
+    fi
+}
 
-version=$1
-user="${2:-typo3-documentation}"
+function versionbranchExists()
+{
+    local version=$1
+    local user="${2:-typo3-documentation}"
 
-users=$(getUsers "$user" " ")
-if [ -z "$users" ]; then
-    usage
-fi
-
-for user in $users; do
-    userdir="$repodir/$user"
-
-    if [ ! -d "$userdir" ]; then
-        exitMsg "The TYPO3 repositories are not pulled to \"$userdir\" yet. Run get-repos.sh first."
+    local users=$(getUsers "$user" " ")
+    if [ -z "$users" ]; then
+        usage
     fi
 
-    cd "$userdir"
-    for repo in *; do
-        if [ ! -d "$userdir/$repo" ]; then
-            break;
+    for user in $users; do
+        userdir="$repodir/$user"
+
+        if [ ! -d "$userdir" ]; then
+            exitMsg "The TYPO3 repositories are not pulled to \"$userdir\" yet. Run get-repos.sh first."
         fi
 
-        cd "$userdir/$repo"
+        cd "$userdir"
+        for repo in *; do
+            if [ ! -d "$userdir/$repo" ]; then
+                break;
+            fi
 
-        git branch -a | grep "remotes\/origin\/$version" >/dev/null
-        if [ $? -eq 0 ]; then
-            echo "$repo has version $version."
-        fi
+            cd "$userdir/$repo"
+
+            git branch -a | grep "remotes\/origin\/$version" >/dev/null
+            if [ $? -eq 0 ]; then
+                echo "$user/$repo has version $version."
+            fi
+        done
     done
-done
+}
+
+handleRequest "$@"

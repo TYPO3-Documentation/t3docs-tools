@@ -224,28 +224,28 @@ Example::
 
     ./bash/get-repos.sh docs typo3-documentation
 
-grep-for-settings.sh
---------------------
+modify-repos.sh
+---------------
 
-This searches for a string in Documentation/Settings.cfg in all branches of those local repositories
-starting with \"TYPO3CMS-\" and stops on first hit::
+Modify the local repositories by a specific action.
 
-    ./bash/grep-for-settings.sh <argument> [<user>]
+modify-repos.sh set-fork
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Set a remote "fork" repository if a given GitHub user namespace has a repository with a matching name::
+
+    ./bash/modify-repos.sh set-fork <fork> [<user>] [<token>]
 
     Arguments:
-       argument: Search for this string in the Documentation/Settings.cfg files of the local repositories.
-       user: Search in the local repositories of this GitHub user namespace (all, friendsoftypo3, typo3, typo3-documentation, ..). Multiple users must be separated by space, e.g. "friendsoftypo3 typo3". [default: "typo3-documentation"]
+       fork: Set a remote "fork" repository if this GitHub user namespace has a repository with a matching name.
+       user: Execute the action in the local repositories of this GitHub user namespace (all, friendsoftypo3, typo3, typo3-documentation, ..). Multiple users must be separated by space, e.g. "friendsoftypo3 typo3". [default: "typo3-documentation"]
+       token: Use this GitHub API token to overcome GitHub rate limitations. [default: ""]
 
 Example::
 
-    ./bash/grep-for-settings.sh t3tssyntax typo3-documentation
+    ./bash/modify-repos.sh set-fork marble
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
-
-search-repos.sh
----------------
-
-This command has been replaced with exec-repos.sh.
 
 versionbranch-exist.sh
 ----------------------

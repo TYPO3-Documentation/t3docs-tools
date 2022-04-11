@@ -242,11 +242,6 @@ Example::
 
 The repositories must already exist in generated-data/repos/. Call get-repos.sh to clone or update first.
 
-search-repos.sh
----------------
-
-This command has been replaced with exec-repos.sh.
-
 versionbranch-exist.sh
 ----------------------
 

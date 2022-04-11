@@ -1,15 +1,11 @@
 #!/bin/bash
 
-# -------------------
-# automatic variables
-# -------------------
-thisdir=$(pwd)
-
+thisdir=$(dirname $(realpath "$0"))
 
 # default configuration
-generateddir=$thisdir/../generated-data
+phpdir=$(realpath "$thisdir/..")
+generateddir=$(realpath "$thisdir/../generated-data")
 repodir=$generateddir/repos
-phpdir=$thisdir/../
 
 # override with custom configuration
 if [ -f $thisdir/config.local.sh ]; then

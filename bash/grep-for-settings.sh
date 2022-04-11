@@ -1,14 +1,8 @@
 #!/bin/bash
 
-# -------------------
-# automatic variables
-# -------------------
-thisdir=$(dirname $0)
-cd $thisdir
-thisdir=$(pwd)
-
-source $thisdir/config.sh
-source $thisdir/helpers.sh
+thisdir=$(dirname $(realpath "$0"))
+source "$thisdir/config.sh"
+source "$thisdir/helpers.sh"
 
 function usage()
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace T3docs\T3docsTools\GitHub;
+namespace T3docs\T3docsTools\GitLab;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
-class GitHubApi
+class GitLabApi
 {
     /**
      * @var Client Guzzle HTTP client
@@ -13,13 +13,13 @@ class GitHubApi
     protected $client;
 
     /**
-     * @var string GitHub access token
+     * @var string GitLab access token
      */
     protected $token;
 
     /**
      * @param string $baseUrl GitHub API base URL
-     * @param string $token GitHub access token
+     * @param string $token GitLab access token
      */
     public function __construct(string $baseUrl, string $token = '')
     {
@@ -30,10 +30,10 @@ class GitHubApi
     }
 
     /**
-     * Send GET HTTP request to GitHub API.
+     * Send GET HTTP request to GitLab API.
      *
-     * @param string $url GitHub URL or path
-     * @return array GitHub response object decoded
+     * @param string $url GitLab URL or path
+     * @return array GitLab response object decoded
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(string $url): array
@@ -42,7 +42,7 @@ class GitHubApi
         if (!empty($this->token)) {
             $options = [
                 'headers' => [
-                    'Authorization' => 'token ' . $this->token
+                    'Authorization' => 'Bearer ' . $this->token
                 ]
             ];
         }
@@ -61,21 +61,12 @@ class GitHubApi
     }
 
     /**
-     * Send GET HTTP request to GitHub API with support of pagination.
+     * Send GET HTTP request to GitLab API with support of pagination.
      *
-     * - by default, this returns only 30 commits
-     *   you can change the number of commits with per_page= (max 100)
-     * - you can get further pages with page=
+     * See: https://docs.gitlab.com/ee/api/#pagination
      *
-     * You MUST use the URLs supplied in the HTTP header link,
-     * example :
-     * Link: <https://api.github.com/repositories/54468502/commits?since=2019-01-01T00%3A00%3A00+01%3A00&until=2019-12-31T23%3A59%3A00+01%3A00&page=2>; rel="next", <https://api.github.com/repositories/54468502/commits?since=2019-01-01T00%3A00%3A00+01%3A00&until=2019-12-31T23%3A59%3A00+01%3A00&page=7>; rel="last"
-     *
-     * https://developer.github.com/v3/#pagination
-     * https://developer.github.com/v3/guides/traversing-with-pagination/
-     *
-     * @param string $url GitHub URL or path
-     * @return array GitHub response object decoded
+     * @param string $url GitLab URL or path
+     * @return array GitLab response object decoded
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAllWithPagination(string $url): array
@@ -84,7 +75,7 @@ class GitHubApi
         if (!empty($this->token)) {
             $options = [
                 'headers' => [
-                    'Authorization' => 'token ' . $this->token
+                    'Authorization' => 'Bearer ' . $this->token
                 ]
             ];
         }
@@ -110,9 +101,9 @@ class GitHubApi
     }
 
     /**
-     * Parse next page URL from GitHub API response.
+     * Parse next page URL from GitLab API response.
      *
-     * @param array $responseHeaders Headers of GitHub API response
+     * @param array $responseHeaders Headers of GitLab API response
      * @return string Next page URL
      */
     protected function getNextPageUrl(array $responseHeaders): string

@@ -5,7 +5,7 @@ thisdir=$(dirname $(realpath "$0"))
 # default configuration
 phpdir=$(realpath "$thisdir/..")
 generateddir=$(realpath "$thisdir/../generated-data")
-repodir=$generateddir/repos
+repodir=$generateddir
 
 # override with custom configuration
 if [ -f $thisdir/config.local.sh ]; then

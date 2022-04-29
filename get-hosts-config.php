@@ -25,7 +25,8 @@ $hosts = $config->getSortedFilteredHosts($host);
 print("(\n");
 foreach ($hosts as $host) {
     printf("[\"%s:type\"]=\"%s\"\n", $host, $config->getTypeOfHost($host));
-    printf("[\"%s:api_url\"]=\"%s\"\n", $host, $config->getApiUrlOfHost($host));
+    printf("[\"%s:http_url\"]=\"%s\"\n", $host, $config->getHttpUrlOfHost($host));
     printf("[\"%s:ssh_url\"]=\"%s\"\n", $host, $config->getSshUrlOfHost($host));
+    printf("[\"%s:api_url\"]=\"%s\"\n", $host, $config->getApiUrlOfHost($host));
 }
 print(")\n");

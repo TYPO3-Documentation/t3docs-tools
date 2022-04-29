@@ -52,11 +52,18 @@ class GitLabRepository
     /**
      * Retrieve all repositories of GitLab user namespace.
      *
+     * Unfortunately GitLab distinguishes between user's and group's repositories in API,
+     * so try both.
+     *
      * @param string $user GitLab user namespace
      */
     protected function getRepos(string $user)
     {
-        $this->repos = $this->api->get("groups/$user/projects?per_page=100");
+        $repos = $this->api->get("users/$user/projects?per_page=100");
+        if (empty($repos)) {
+            $repos = $this->api->get("groups/$user/projects?per_page=100");
+        }
+        $this->repos = $repos;
     }
 
     /**
@@ -72,7 +79,7 @@ class GitLabRepository
         foreach ($this->repos as $repo) {
             if (empty($repo['path'])
                 || $type === 'docs' && strpos($repo['path'], 'TYPO3CMS-') !== 0
-                || $repo['archived']
+                || ($repo['archived'] ?? false)
                 || in_array($repo['path'], $this->config->getIgnoredRepos($this->host, $user))
                 || !empty($this->config->getIncludedRepos($this->host, $user))
                     && !in_array($repo['path'], $this->config->getIncludedRepos($this->host, $user))

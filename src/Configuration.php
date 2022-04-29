@@ -64,14 +64,19 @@ class Configuration
         return $this->config['hosts'][$host]['type'] ?? '';
     }
 
-    public function getApiUrlOfHost(string $host): string
+    public function getHttpUrlOfHost(string $host): string
     {
-        return $this->config['hosts'][$host]['api_url'] ?? '';
+        return $this->config['hosts'][$host]['http_url'] ?? '';
     }
 
     public function getSshUrlOfHost(string $host): string
     {
         return $this->config['hosts'][$host]['ssh_url'] ?? '';
+    }
+
+    public function getApiUrlOfHost(string $host): string
+    {
+        return $this->config['hosts'][$host]['api_url'] ?? '';
     }
 
     public function getFilteredUsers(string $host, string $user): array

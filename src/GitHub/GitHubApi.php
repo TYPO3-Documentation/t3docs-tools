@@ -50,7 +50,7 @@ class GitHubApi
         try {
             $response = $this->client->request('GET', $url, $options);
         } catch (ClientException $e) {
-            print("HTTP {$e->getCode()} thrown for \"GET $url\": {$e->getMessage()}");
+            error_log("HTTP {$e->getCode()} thrown for \"GET $url\": {$e->getMessage()}");
             return [];
         }
         if ($response->getStatusCode() !== 200) {
@@ -63,16 +63,7 @@ class GitHubApi
     /**
      * Send GET HTTP request to GitHub API with support of pagination.
      *
-     * - by default, this returns only 30 commits
-     *   you can change the number of commits with per_page= (max 100)
-     * - you can get further pages with page=
-     *
-     * You MUST use the URLs supplied in the HTTP header link,
-     * example :
-     * Link: <https://api.github.com/repositories/54468502/commits?since=2019-01-01T00%3A00%3A00+01%3A00&until=2019-12-31T23%3A59%3A00+01%3A00&page=2>; rel="next", <https://api.github.com/repositories/54468502/commits?since=2019-01-01T00%3A00%3A00+01%3A00&until=2019-12-31T23%3A59%3A00+01%3A00&page=7>; rel="last"
-     *
-     * https://developer.github.com/v3/#pagination
-     * https://developer.github.com/v3/guides/traversing-with-pagination/
+     * See: https://docs.github.com/en/rest/guides/traversing-with-pagination
      *
      * @param string $url GitHub URL or path
      * @return array GitHub response object decoded
@@ -96,7 +87,7 @@ class GitHubApi
             try {
                 $response = $this->client->request('GET', $nextPageUrl, $options);
             } catch (ClientException $e) {
-                print("HTTP {$e->getCode()} thrown for \"GET $nextPageUrl\": {$e->getMessage()}");
+                error_log("HTTP {$e->getCode()} thrown for \"GET $nextPageUrl\": {$e->getMessage()}");
                 return [];
             }
             if ($response->getStatusCode() !== 200) {

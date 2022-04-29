@@ -50,7 +50,7 @@ class GitLabApi
         try {
             $response = $this->client->request('GET', $url, $options);
         } catch (ClientException $e) {
-            print("HTTP {$e->getCode()} thrown for \"GET $url\": {$e->getMessage()}");
+            error_log("HTTP {$e->getCode()} thrown for \"GET $url\": {$e->getMessage()}");
             return [];
         }
         if ($response->getStatusCode() !== 200) {
@@ -87,7 +87,7 @@ class GitLabApi
             try {
                 $response = $this->client->request('GET', $nextPageUrl, $options);
             } catch (ClientException $e) {
-                print("HTTP {$e->getCode()} thrown for \"GET $nextPageUrl\": {$e->getMessage()}");
+                error_log("HTTP {$e->getCode()} thrown for \"GET $nextPageUrl\": {$e->getMessage()}");
                 return [];
             }
             if ($response->getStatusCode() !== 200) {

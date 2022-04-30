@@ -15,8 +15,8 @@ function usage()
     print("\n");
     print("Arguments:\n");
     print("   type: Consider all repositories or only those starting with \"TYPO3CMS-\" (all, docs). [default: \"docs\"]\n");
-    print("   host: Consider the repositories of this host (" . implode(', ', $hosts) . "), which has to be defined in the /config.yml or /config.local.yml. [default: \"github.com\"]\n");
-    print("   user: Consider the repositories of this user namespace (" . implode(', ', $users) . "), which has to be defined in the /config.yml or /config.local.yml. [default: \"github.com:typo3-documentation\"]\n");
+    print("   host: Consider the repositories of this host (all, " . implode(', ', $hosts) . "), which has to be defined in the /config.yml or /config.local.yml. [default: \"github.com\"]\n");
+    print("   user: Consider the repositories of this user namespace (all, " . implode(', ', $users) . "), which has to be defined in the /config.yml or /config.local.yml. [default: \"github.com:typo3-documentation\"]\n");
     print("   token: Fetch the repositories using this GitHub / GitLab API token to overcome rate limitations. [default: \"\"]\n");
     exit(1);
 }
@@ -31,17 +31,24 @@ $user = $argv[3] ?? 'github.com:typo3-documentation';
 $token = $argv[4] ?? '';
 
 $config = new Configuration();
+$users = $config->getSortedFilteredUsers($host, $user);
+
 $repos = [];
-if ($config->getTypeOfHost($host) === Configuration::HOST_TYPE_GITHUB) {
-    $gitRepository = new GithubRepository($host, $token);
-    $gitRepository->fetchRepos($user, $type);
-    $repos = $gitRepository->getNames();
-} elseif ($config->getTypeOfHost($host) === Configuration::HOST_TYPE_GITLAB) {
-    $gitRepository = new GitLabRepository($host, $token);
-    $gitRepository->fetchRepos($user, $type);
-    $repos = $gitRepository->getNames();
+foreach ($users as $userIdentifier) {
+    list($host, $user) = explode(':', $userIdentifier, 2);
+    if ($config->getTypeOfHost($host) === Configuration::HOST_TYPE_GITHUB) {
+        $gitRepository = new GithubRepository($host, $token);
+        $gitRepository->fetchRepos($user, $type);
+        $repos[$userIdentifier] = $gitRepository->getNames();
+    } elseif ($config->getTypeOfHost($host) === Configuration::HOST_TYPE_GITLAB) {
+        $gitRepository = new GitLabRepository($host, $token);
+        $gitRepository->fetchRepos($user, $type);
+        $repos[$userIdentifier] = $gitRepository->getNames();
+    }
 }
 
-foreach($repos as $repo) {
-    print("$repo\n");
+foreach($repos as $userIdentifier => $reposByUser) {
+    foreach ($reposByUser as $repo) {
+        print("$repo\n");
+    }
 }

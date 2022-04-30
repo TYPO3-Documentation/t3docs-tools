@@ -104,6 +104,12 @@ class GithubRepository
         return $branchNames;
     }
 
+    public function fetchIssue(string $user, string $repoName, int $issueId): array
+    {
+        $issue = $this->api->get("repos/$user/$repoName/issues/$issueId");
+        return $issue;
+    }
+
     /**
      * Load contributors of GitHub repositories via GitHub API.
      *

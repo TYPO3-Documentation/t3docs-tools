@@ -6,17 +6,18 @@ source "$thisdir/helpers.sh"
 
 function usage()
 {
-    echo "Usage: $0 <version> [<user>]"
+    echo "Usage: $0 <version> [<host>] [<user>]"
     echo ""
     echo "Arguments:"
     echo "   version: List all local repositories having a branch matching this version."
-    echo "   user: List local repositories of this GitHub user namespace (all, $(getUsers 'all' ', ')). Multiple users must be separated by space, e.g. \"friendsoftypo3 typo3\". [default: \"typo3-documentation\"]"
+    echo "   host: List local repositories of this host (all, $(getHosts 'all' ', ')). Multiple hosts must be separated by space, e.g. \"github.com gitlab.com\". [default: \"all\"]"
+    echo "   user: List local repositories of this user namespace (all, $(getUsers 'all' 'all' ', ')). Multiple users must be separated by space, e.g. \"github.com:friendsoftypo3 github.com:typo3\". [default: \"all\"]"
     exit 1
 }
 
 function handleRequest()
 {
-    if [ $# -ge 1 ] && [ $# -le 2 ]; then
+    if [ $# -ge 1 ] && [ $# -le 3 ]; then
         versionbranchExists "$@"
     else
         usage
@@ -26,32 +27,47 @@ function handleRequest()
 function versionbranchExists()
 {
     local version=$1
-    local user="${2:-typo3-documentation}"
+    local host="${2:-all}"
+    local user="${3:-all}"
 
-    local users=$(getUsers "$user" " ")
-    if [ -z "$users" ]; then
+    local hosts=$(getHosts "$host" " ")
+    local users=$(getUsers "$host" "$user" " ")
+    if [ -z "$hosts" ]; then
+        echo "Cannot find any configured host for given \"$host\" in /config.yml or /config.local.yml."
+        echo "---"
+        usage
+    elif [ -z "$users" ]; then
+        echo "Cannot find any configured user for given host \"$host\" and user \"$user\" in /config.yml or /config.local.yml."
+        echo "---"
         usage
     fi
 
-    for user in $users; do
-        userdir="$repodir/$user"
-
-        if [ ! -d "$userdir" ]; then
-            exitMsg "The TYPO3 repositories are not pulled to \"$userdir\" yet. Run get-repos.sh first."
-        fi
-
-        cd "$userdir"
-        for repo in *; do
-            if [ ! -d "$userdir/$repo" ]; then
-                break;
+    for host in $hosts; do
+        for user in $users; do
+            if [[ ! $user =~ ^$host: ]]; then
+                continue
             fi
 
-            cd "$userdir/$repo"
+            user=$(echo "$user" | awk -F':' '{print $2}')
+            userdir="$repodir/$host/$user"
 
-            git branch -a | grep "remotes\/origin\/$version" >/dev/null
-            if [ $? -eq 0 ]; then
-                echo "$user/$repo has version $version."
+            if [ ! -d "$userdir" ]; then
+                exitMsg "The TYPO3 repositories are not pulled to \"$userdir\" yet. Run get-repos.sh first."
             fi
+
+            cd "$userdir"
+            for repo in *; do
+                if [ ! -d "$userdir/$repo" ]; then
+                    break;
+                fi
+
+                cd "$userdir/$repo"
+
+                git branch -a | grep "remotes\/origin\/$version" >/dev/null
+                if [ $? -eq 0 ]; then
+                    echo "$host/$user/$repo has version $version."
+                fi
+            done
         done
     done
 }

@@ -1,11 +1,11 @@
 <?php
 
-namespace T3docs\T3docsTools\GitHub;
+namespace T3docs\T3docsTools\GitLab;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
 
-class GitHubApi
+class GitLabApi
 {
     /**
      * @var Client Guzzle HTTP client
@@ -13,13 +13,13 @@ class GitHubApi
     protected $client;
 
     /**
-     * @var string GitHub access token
+     * @var string GitLab access token
      */
     protected $token;
 
     /**
      * @param string $baseUrl GitHub API base URL
-     * @param string $token GitHub access token
+     * @param string $token GitLab access token
      */
     public function __construct(string $baseUrl, string $token = '')
     {
@@ -30,10 +30,10 @@ class GitHubApi
     }
 
     /**
-     * Send GET HTTP request to GitHub API.
+     * Send GET HTTP request to GitLab API.
      *
-     * @param string $url GitHub URL or path
-     * @return array GitHub response object decoded
+     * @param string $url GitLab URL or path
+     * @return array GitLab response object decoded
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function get(string $url): array
@@ -42,7 +42,7 @@ class GitHubApi
         if (!empty($this->token)) {
             $options = [
                 'headers' => [
-                    'Authorization' => 'token ' . $this->token
+                    'Authorization' => 'Bearer ' . $this->token
                 ]
             ];
         }
@@ -61,12 +61,12 @@ class GitHubApi
     }
 
     /**
-     * Send GET HTTP request to GitHub API with support of pagination.
+     * Send GET HTTP request to GitLab API with support of pagination.
      *
-     * See: https://docs.github.com/en/rest/guides/traversing-with-pagination
+     * See: https://docs.gitlab.com/ee/api/#pagination
      *
-     * @param string $url GitHub URL or path
-     * @return array GitHub response object decoded
+     * @param string $url GitLab URL or path
+     * @return array GitLab response object decoded
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getAllWithPagination(string $url): array
@@ -75,7 +75,7 @@ class GitHubApi
         if (!empty($this->token)) {
             $options = [
                 'headers' => [
-                    'Authorization' => 'token ' . $this->token
+                    'Authorization' => 'Bearer ' . $this->token
                 ]
             ];
         }
@@ -101,9 +101,9 @@ class GitHubApi
     }
 
     /**
-     * Parse next page URL from GitHub API response.
+     * Parse next page URL from GitLab API response.
      *
-     * @param array $responseHeaders Headers of GitHub API response
+     * @param array $responseHeaders Headers of GitLab API response
      * @return string Next page URL
      */
     protected function getNextPageUrl(array $responseHeaders): string

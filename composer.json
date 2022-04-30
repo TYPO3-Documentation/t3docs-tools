@@ -10,7 +10,11 @@
     {
       "name": "Sybille Peters",
       "role": "Developer",
-      "homepage": "http://montagmorgen.at"
+      "homepage": "https://montagmorgen.at/"
+    },
+    {
+      "name": "Alexander Nitsche",
+      "role": "Developer"
     }
   ],
   "license": [

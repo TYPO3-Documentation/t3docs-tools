@@ -3,7 +3,7 @@
 namespace T3docs\T3docsTools\Changelog;
 
 use Symfony\Component\DomCrawler\Crawler;
-use T3docs\T3docsTools\GitHub\GitHubApi;
+use T3docs\T3docsTools\GitHub\GithubRepository;
 
 class GenerateChangelogIssue
 {
@@ -64,17 +64,17 @@ class GenerateChangelogIssue
         ]
     ];
 
-    public function __construct()
-    {
-        $this->api = new GitHubApi();
-    }
+    /**
+     * @var GithubRepository
+     */
+    protected $repository;
 
-    public function getBaseUrl(string $url): string
+    /**
+     * @param string $token GitHub access token
+     */
+    public function __construct(string $token = '')
     {
-        $a = explode('/', $url);
-
-        array_pop($a);
-        return implode('/', $a);
+        $this->repository = new GithubRepository("github.com", $token);
     }
 
     /**
@@ -83,13 +83,16 @@ class GenerateChangelogIssue
      *
      * Put changes from issue in $this->changesInIssue
      *
-     * @return string
+     * @return array
      */
-    public function getChangesFromIssue(int $id, string $repo='TYPO3CMS-Reference-CoreApi') : array
+    public function getChangesFromIssue(int $issueId) : array
     {
-        $url = "https://api.github.com/repos/TYPO3-Documentation/$repo/issues/$id";
+        $results = $this->repository->fetchIssue(
+            "TYPO3-Documentation",
+            "TYPO3CMS-Reference-CoreApi",
+            $issueId
+        );
 
-        $results = $this->api->get($url);
         $body = $results['body'] ?? '';
 
         $lines = explode("\n", $body);
@@ -128,8 +131,8 @@ class GenerateChangelogIssue
                     'line' => $line
                 ];
             }
-
         }
+
         return $this->changesInIssue;
     }
 
@@ -174,15 +177,22 @@ class GenerateChangelogIssue
                         'line' => $line
                     ];
                 }
-
             }
-
         }
-        return $this->changes;
 
+        return $this->changes;
     }
 
-    private function escapeTitleFromChangelog($title) {
+    protected function getBaseUrl(string $url): string
+    {
+        $a = explode('/', $url);
+
+        array_pop($a);
+        return implode('/', $a);
+    }
+
+    private function escapeTitleFromChangelog($title): string
+    {
         return str_replace(['[', ']'], '_', $title);
     }
 
@@ -190,10 +200,8 @@ class GenerateChangelogIssue
     {
         $baseUrl = $this->getBaseUrl($url);
 
-
         $html = file_get_contents($url);
         $crawler = new Crawler($html);
-
 
         foreach ($this->changes as $key => $values) {
 
@@ -210,12 +218,10 @@ class GenerateChangelogIssue
                     'url' => $url,
                     'line' => "* [ ] [$title]($url)"
                 ];
-
             }
-
         }
-        return $this->changes;
 
+        return $this->changes;
     }
 
     public function printChangelogs()

@@ -128,11 +128,11 @@ class GitLabRepository
             $commits = $this->getCommits($repo, $year, $month);
 
             foreach ($commits as $commit) {
-                $id = $commit['author']['id'];
+                $id = $commit['author_email'] ?? $commit['author_name'];
                 if (!isset($contributors[$id])) {
                     $contributors[$id] = [
-                        'name' => $commit['commit']['author']['name'],
-                        'email' => $commit['commit']['author']['email'],
+                        'name' => $commit['author_name'],
+                        'email' => $commit['author_email'],
                         'count' => 0
                     ];
                 }

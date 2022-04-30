@@ -113,7 +113,7 @@ class Configuration
     {
         $parts = ['host' => '', 'user' => $userIdentifier];
         if (str_contains($userIdentifier, ':')) {
-            list($parts['host'], $parts['user']) = explode(':', $userIdentifier, 2);;
+            list($parts['host'], $parts['user']) = explode(':', $userIdentifier, 2);
         }
         return $parts[$part];
     }

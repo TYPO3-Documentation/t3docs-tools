@@ -127,7 +127,9 @@ class GithubRepository
             $commits = $this->getCommits($repo, $year, $month);
 
             foreach ($commits as $commit) {
-                $id = $commit['author']['id'];
+                $id = $commit['author']['id']
+                        ?? $commit['commit']['author']['email']
+                        ?? $commit['commit']['author']['name'];
                 if (!isset($contributors[$id])) {
                     $contributors[$id] = [
                         'name' => $commit['commit']['author']['name'],

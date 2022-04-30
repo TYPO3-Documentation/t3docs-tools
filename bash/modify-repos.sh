@@ -9,7 +9,7 @@ function usage()
     echo "Usage: $0 set-fork <fork> [<host>] [<user>] [<token>]"
     echo ""
     echo "Arguments:"
-    echo "   fork: Set a remote \"fork\" repository if this GitHub user namespace has a repository with a matching name."
+    echo "   fork: Set a remote \"fork\" repository if this user namespace has a repository with a matching name."
     echo "   host: Execute the action in the local repositories of this host (all, $(getHosts 'all' ', ')). Multiple hosts must be separated by space, e.g. \"github.com gitlab.com\". [default: \"all\"]"
     echo "   user: Execute the action in the local repositories of this user namespace (all, $(getUsers 'all' 'all' ', ')). Multiple users must be separated by space, e.g. \"github.com:friendsoftypo3 github.com:typo3\". [default: \"all\"]"
     echo "   token: Use this GitHub / GitLab API token to overcome rate limitations. [default: \"\"]"
@@ -57,7 +57,7 @@ function setFork()
     fi
     local forkRepos=""
     if [ -n "$forkUser" ]; then
-        forkRepos=$(getRepoNames "all" "$host" "$forkUser" "$token" " ")
+        forkRepos=$(getRepoNames "all" "$host" "$forkUser" "$token" "1" " ")
     fi
 
     declare -A hostsConfig=$(getHostsConfig "$host")

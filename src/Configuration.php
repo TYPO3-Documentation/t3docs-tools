@@ -9,6 +9,9 @@ class Configuration
     public const HOST_TYPE_GITHUB = 'github';
     public const HOST_TYPE_GITLAB = 'gitlab';
 
+    public const CHECK_HOST_AND_USER = 0;
+    public const CHECK_HOST_ONLY = 1;
+
     /** @var Configuration */
     public static $instance;
 
@@ -79,7 +82,7 @@ class Configuration
         return $this->config['hosts'][$host]['api_url'] ?? '';
     }
 
-    public function getFilteredUsers(string $host, string $user): array
+    public function getFilteredUsers(string $host, string $user, int $filterType = self::CHECK_HOST_AND_USER): array
     {
         $filteredUsers = [];
         $hosts = $this->getFilteredHosts($host);
@@ -95,7 +98,11 @@ class Configuration
                 $filter = explode(" ", $user);
                 $filter = array_filter($filter, function($u) use ($h) { return $this->isUserIdentifierOfHost($h, $u); });
                 $filter = array_map(function($u) use ($h) { return $this->extractFromUserIdentifier($u, 'user'); }, $filter);
-                $users = array_intersect($users, $filter);
+                if ($filterType === self::CHECK_HOST_AND_USER) {
+                    $users = array_intersect($users, $filter);
+                } elseif ($filterType === self::CHECK_HOST_ONLY) {
+                    $users = $filter;
+                }
                 $usersIdentifiers = array_map(function($u) use ($h) { return $this->composeUserIdentifier($h, $u); }, $users);
                 $filteredUsers = array_merge($filteredUsers, $usersIdentifiers);
             }
@@ -123,9 +130,9 @@ class Configuration
         return $host . ':' . $user;
     }
 
-    public function getSortedFilteredUsers(string $host, string $user): array
+    public function getSortedFilteredUsers(string $host, string $user, int $filterType = self::CHECK_HOST_AND_USER): array
     {
-        $users = $this->getFilteredUsers($host, $user);
+        $users = $this->getFilteredUsers($host, $user, $filterType);
         natcasesort($users);
         return $users;
     }

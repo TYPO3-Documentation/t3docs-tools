@@ -64,13 +64,14 @@ get-repo-names.php
 
 List the remote repos::
 
-    php get-repo-names.php [<type>] [<host>] [<user>] [<token>]
+    php get-repo-names.php [<type>] [<host>] [<user>] [<token>] [<force>]
 
     Arguments:
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
        host: Consider the repositories of this host (all, github.com, ..), which has to be defined in the /config.yml or /config.local.yml. [default: "github.com"]
        user: Consider the repositories of this user namespace (all, github.com:friendsoftypo3, github.com:typo3, github.com:typo3-documentation, ..), which has to be defined in the /config.yml or /config.local.yml. [default: "github.com:typo3-documentation"]
        token: Fetch the repositories using this GitHub / GitLab API token to overcome rate limitations. [default: ""]
+       force: Allow user namespaces not configured in the /config.yml or /config.local.yml. Requires a specific user namespace, not the generic "all". [default: 0]
 
 Example::
 
@@ -81,13 +82,14 @@ get-repo-branches.php
 
 List the branches of the remote repos::
 
-    php get-repo-branches.php [<type>] [<host>] [<user>] [<token>]
+    php get-repo-branches.php [<type>] [<host>] [<user>] [<token>] [<force>]
 
     Arguments:
        type: Consider all repositories or only those starting with "TYPO3CMS-" (all, docs). [default: "docs"]
        host: Consider the repositories of this host (all, github.com, ..), which has to be defined in the /config.yml or /config.local.yml. [default: "github.com"]
        user: Consider the repositories of this user namespace (all, github.com:friendsoftypo3, github.com:typo3, github.com:typo3-documentation, ..), which has to be defined in the /config.yml or /config.local.yml. [default: "github.com:typo3-documentation"]
        token: Fetch the repositories using this GitHub / GitLab API token to overcome rate limitations. [default: ""]
+       force: Allow user namespaces not configured in the /config.yml or /config.local.yml. Requires a specific user namespace, not the generic "all". [default: 0]
 
 Example::
 
@@ -98,7 +100,7 @@ get-contributors.php
 
 List the contributors of the remote repos or a specific repo::
 
-    php get-contributors.php [<year>] [<month>] [<type>] [<host>] [<user>] [<repo>] [<token>]
+    php get-contributors.php [<year>] [<month>] [<type>] [<host>] [<user>] [<repo>] [<token>] [<force>]
 
     Arguments:
        year: Consider commits of this year, "0" means the current year. [default: "0"]
@@ -108,6 +110,7 @@ List the contributors of the remote repos or a specific repo::
        user: Consider the repositories of this user namespace (all, github.com:friendsoftypo3, github.com:typo3, github.com:typo3-documentation, ..), which has to be defined in the /config.yml or /config.local.yml. [default: "github.com:typo3-documentation"]
        repo: Consider commits of this specific repository, "" means of all repositories. [default: ""]
        token: Fetch the repositories using this GitHub / GitLab API token to overcome rate limitations. [default: ""]
+       force: Allow user namespaces not configured in the /config.yml or /config.local.yml. Requires a specific user namespace, not the generic "all". [default: 0]
 
 Example::
 
@@ -248,7 +251,7 @@ Set a remote "fork" repository if a given user namespace has a repository with a
     ./bash/modify-repos.sh set-fork <fork> [<host>] [<user>] [<token>]
 
     Arguments:
-       fork: Set a remote "fork" repository if this GitHub user namespace has a repository with a matching name.
+       fork: Set a remote "fork" repository if this user namespace has a repository with a matching name.
        host: Execute the action in the local repositories of this host (all, github.com, ..). Multiple hosts must be separated by space, e.g. "github.com gitlab.com". [default: "all"]
        user: Execute the action in the local repositories of this user namespace (all, github.com:friendsoftypo3, github.com:typo3, github.com:typo3-documentation, ..). Multiple users must be separated by space, e.g. "github.com:friendsoftypo3 github.com:typo3". [default: "all"]
        token: Use this GitHub / GitLab API token to overcome rate limitations. [default: ""]

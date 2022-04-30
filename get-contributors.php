@@ -11,7 +11,7 @@ function usage()
     $config = new Configuration();
     $hosts = $config->getSortedFilteredHosts('all');
     $users = $config->getSortedFilteredUsers('all', 'all');
-    print("Usage: php get-contributors.php [<year>] [<month>] [<type>] [<host>] [<user>] [<repo>] [<token>]\n");
+    print("Usage: php get-contributors.php [<year>] [<month>] [<type>] [<host>] [<user>] [<repo>] [<token>] [<force>]\n");
     print("\n");
     print("Arguments:\n");
     print("   year: Consider commits of this year, \"0\" means the current year. [default: \"0\"]\n");
@@ -21,10 +21,11 @@ function usage()
     print("   user: Consider the repositories of this user namespace (all, " . implode(', ', $users) . "), which has to be defined in the /config.yml or /config.local.yml. [default: \"github.com:typo3-documentation\"]\n");
     print("   repo: Consider commits of this specific repository, \"\" means of all repositories. [default: \"\"]\n");
     print("   token: Fetch the repositories using this GitHub / GitLab API token to overcome rate limitations. [default: \"\"]\n");
+    print("   force: Allow user namespaces not configured in the /config.yml or /config.local.yml. Requires a specific user namespace, not the generic \"all\". [default: 0]\n");
     exit(1);
 }
 
-if ($argc > 8) {
+if ($argc > 9) {
     usage();
 }
 
@@ -35,9 +36,14 @@ $host = $argv[4] ?? 'github.com';
 $user = $argv[5] ?? 'github.com:typo3-documentation';
 $repo = $argv[6] ?? '';
 $token = $argv[7] ?? '';
+$force = (bool)($argv[8] ?? 0);
 
 $config = new Configuration();
-$users = $config->getSortedFilteredUsers($host, $user);
+if (!$force) {
+    $users = $config->getSortedFilteredUsers($host, $user);
+} else {
+    $users = $config->getSortedFilteredUsers($host, $user, Configuration::CHECK_HOST_ONLY);
+}
 
 $contributors = [];
 foreach($users as $userIdentifier) {

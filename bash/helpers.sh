@@ -38,10 +38,11 @@ function getRepoNames()
     local host="$2"
     local user="$3"
     local token="$4"
-    local separator="$5"
+    local force="$5"
+    local separator="$6"
 
     local repos
-    repos=$(php -f $phpdir/get-repo-names.php "$type" "$host" "$user" "$token" | tr '\n' ' ' | sed -e 's/[[:space:]]*$//')
+    repos=$(php -f $phpdir/get-repo-names.php "$type" "$host" "$user" "$token" "$force" | tr '\n' ' ' | sed -e 's/[[:space:]]*$//')
     repos=$(echo $repos | sed "s/[[:space:]]/$separator/g")
     echo "$repos"
 }

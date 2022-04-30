@@ -69,7 +69,7 @@ function getRepos()
             echo "$userdir/."
             echo "------------------------------------------------------------------------"
 
-            getRepoNames "$type" "$host" "$user" "$token" "\n" | while read repo; do
+            getRepoNames "$type" "$host" "$user" "$token" "0" "\n" | while read repo; do
                 cd "$userdir"
                 if [ ! -d "$repo" ]; then
                     echo "Cloning repo $repo."

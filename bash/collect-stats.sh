@@ -76,8 +76,7 @@ function collectStats()
                     # Checkout and update current branch
                     exists=$(git branch -a --list "origin/$branch")
                     if [ -n "$exists" ]; then
-                        git checkout -f $branch || exitMsg "checkout $branch in $repo"
-                        git reset --hard origin/$branch || exitMsg "reset --hard origin/$branch in $repo"
+                        git checkout -B $branch origin/$branch || exitMsg "checkout $branch based on origin/$branch in $repo"
                     else
                         continue
                     fi
